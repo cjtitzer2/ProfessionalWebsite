@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:5173",
+"RedirectUrl": "",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "G:\\CodeRepos\\ProfessionalWebsite\\ClayTitzer_DigitalResumeWebsite\\ClayTitzer_DigitalResumeWebsite.Server\\..\\claytitzer_digitalresumewebsite.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}

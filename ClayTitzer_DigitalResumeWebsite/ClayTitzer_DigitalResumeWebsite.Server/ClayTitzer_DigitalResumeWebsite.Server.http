@@ -1,0 +1,6 @@
+@ClayTitzer_DigitalResumeWebsite.Server_HostAddress = http://localhost:5190
+
+GET {{ClayTitzer_DigitalResumeWebsite.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
