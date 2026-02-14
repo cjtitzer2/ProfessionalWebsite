@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClayTitzer_DigitalResumeWebsite.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f16a05046050c77e89aaf8aafdebfac806bc62bc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38eebcf284f7bf3a27cfc7ee319638df3eea082c")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClayTitzer_DigitalResumeWebsite.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClayTitzer_DigitalResumeWebsite.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
