@@ -4,9 +4,11 @@ import { renderWithRouter } from '../test/helpers'
 import Nav from './Nav'
 
 describe('Nav', () => {
-  it('renders the logo', () => {
+  it('renders the logo link', () => {
     renderWithRouter(<Nav />)
-    expect(screen.getByText('T')).toBeInTheDocument()
+    const logoLink = screen.getByRole('link', { name: /CT/i })
+    expect(logoLink).toBeInTheDocument()
+    expect(logoLink).toHaveAttribute('href', '/')
   })
 
   it('renders all navigation links', () => {
