@@ -7,7 +7,7 @@ export default function ScrollSpy({ sections }) {
   const onScroll = useCallback(() => {
     const scrollTop = window.scrollY
     const docHeight = document.documentElement.scrollHeight - window.innerHeight
-    const p = docHeight > 0 ? scrollTop / docHeight : 0
+    const p = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0
     setProgress(p)
 
     const sectionBreaks = sections.map((_, i) => i / sections.length)
@@ -21,7 +21,6 @@ export default function ScrollSpy({ sections }) {
 
   useEffect(() => {
     window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
     return () => window.removeEventListener('scroll', onScroll)
   }, [onScroll])
 

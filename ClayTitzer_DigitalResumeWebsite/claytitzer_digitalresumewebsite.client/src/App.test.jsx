@@ -10,11 +10,19 @@ describe('App', () => {
 
   it('renders nav with all links', async () => {
     render(<App />)
-    expect(await screen.findByRole('navigation')).toBeInTheDocument()
-    const nav = screen.getByRole('navigation')
-    expect(nav.querySelector('a[href="/"]')).toBeInTheDocument()
-    expect(nav.querySelector('a[href="/career"]')).toBeInTheDocument()
-    expect(nav.querySelector('a[href="/education"]')).toBeInTheDocument()
-    expect(nav.querySelector('a[href="/about"]')).toBeInTheDocument()
+    const nav = await screen.findByRole('navigation')
+    const { within } = await import('@testing-library/react')
+    const navScope = within(nav)
+    expect(navScope.getByRole('link', { name: /home/i })).toBeInTheDocument()
+    expect(navScope.getByRole('link', { name: /^career$/i })).toBeInTheDocument()
+    expect(navScope.getByRole('link', { name: /^education$/i })).toBeInTheDocument()
+    expect(navScope.getByRole('link', { name: /^about$/i })).toBeInTheDocument()
+  })
+
+  it('renders fallback for unknown routes', async () => {
+    window.location.hash = '#/nonexistent'
+    render(<App />)
+    expect(await screen.findByText(/page not found/i)).toBeInTheDocument()
+    window.location.hash = ''
   })
 })

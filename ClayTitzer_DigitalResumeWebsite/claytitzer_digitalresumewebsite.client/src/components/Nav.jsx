@@ -16,7 +16,7 @@ export default function Nav() {
     const onScroll = () => {
       setScrolled(window.scrollY > 20)
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      setProgress(docHeight > 0 ? window.scrollY / docHeight : 0)
+      setProgress(docHeight > 0 ? Math.min(Math.max(window.scrollY / docHeight, 0), 1) : 0)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)

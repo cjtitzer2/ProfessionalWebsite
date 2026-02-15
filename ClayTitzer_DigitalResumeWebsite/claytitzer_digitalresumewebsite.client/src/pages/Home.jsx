@@ -3,8 +3,8 @@ import ScrollReveal from '../components/ScrollReveal'
 import ScrollSpy from '../components/ScrollSpy'
 import { experience, education } from '../data/resume'
 
-const current = experience[0]
-const sections = ['Intro', 'Role', 'Education']
+const current = experience[0] ?? null
+const sections = ['Intro', ...(current ? ['Role'] : []), 'Education']
 
 export default function Home() {
   return (
@@ -25,11 +25,13 @@ export default function Home() {
             </h1>
           </ScrollReveal>
 
-          <ScrollReveal delay={200}>
-            <p className="text-xl text-slate mt-3 mb-0 font-light">
-              {current.title}
-            </p>
-          </ScrollReveal>
+          {current && (
+            <ScrollReveal delay={200}>
+              <p className="text-xl text-slate mt-3 mb-0 font-light">
+                {current.title}
+              </p>
+            </ScrollReveal>
+          )}
 
           <ScrollReveal delay={300}>
             <p className="text-base text-charcoal/70 mt-6 mb-0 max-w-lg leading-relaxed">
@@ -58,30 +60,34 @@ export default function Home() {
         </div>
 
         {/* Current Role */}
-        <section className="py-16">
-          <ScrollReveal>
-            <p className="font-mono text-xs text-gold tracking-widest uppercase mb-6">Current Role</p>
-          </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <div className="border-l-2 border-accent pl-6 bg-accent-light/30 py-5 pr-5 rounded-r-sm">
-              <h2 className="text-2xl font-semibold text-charcoal m-0">{current.title}</h2>
-              <p className="text-slate mt-1 mb-0">{current.subtitle}</p>
-              <p className="font-mono text-xs text-gold mt-1 mb-0 tracking-wide">{current.dates}</p>
-              <ul className="mt-4 space-y-2 list-none p-0">
-                {current.bullets.slice(0, 3).map((item, i) => (
-                  <li key={i} className="bullet">{item}</li>
-                ))}
-              </ul>
-            </div>
-          </ScrollReveal>
-        </section>
+        {current && (
+          <>
+            <section className="py-16">
+              <ScrollReveal>
+                <p className="font-mono text-xs text-gold tracking-widest uppercase mb-6">Current Role</p>
+              </ScrollReveal>
+              <ScrollReveal delay={100}>
+                <div className="border-l-2 border-accent pl-6 bg-accent-light/30 py-5 pr-5 rounded-r-sm">
+                  <h2 className="text-2xl font-semibold text-charcoal m-0">{current.title}</h2>
+                  <p className="text-slate mt-1 mb-0">{current.subtitle}</p>
+                  <p className="font-mono text-xs text-gold mt-1 mb-0 tracking-wide">{current.dates}</p>
+                  <ul className="mt-4 space-y-2 list-none p-0">
+                    {current.bullets.slice(0, 3).map((item, i) => (
+                      <li key={i} className="bullet">{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </ScrollReveal>
+            </section>
 
-        {/* Decorative divider */}
-        <div className="flex items-center gap-3 justify-center my-4">
-          <div className="w-12 h-px bg-gradient-to-r from-transparent to-gold/60" />
-          <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-          <div className="w-12 h-px bg-gradient-to-l from-transparent to-gold/60" />
-        </div>
+            {/* Decorative divider */}
+            <div className="flex items-center gap-3 justify-center my-4">
+              <div className="w-12 h-px bg-gradient-to-r from-transparent to-gold/60" />
+              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
+              <div className="w-12 h-px bg-gradient-to-l from-transparent to-gold/60" />
+            </div>
+          </>
+        )}
 
         {/* Education Preview */}
         <section className="py-16 pb-24">
