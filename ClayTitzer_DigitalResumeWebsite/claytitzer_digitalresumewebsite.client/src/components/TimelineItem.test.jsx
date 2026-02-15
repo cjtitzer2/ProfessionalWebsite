@@ -46,4 +46,16 @@ describe('TimelineItem', () => {
     const dot = container.querySelector('.rounded-full')
     expect(dot.className).toContain('bg-offwhite')
   })
+
+  it('renders with undefined bullets (uses default empty array)', () => {
+    expect(() => render(<TimelineItem title="Test" dates="2024" bullets={undefined} />)).not.toThrow()
+    expect(screen.queryByRole('list')).not.toBeInTheDocument()
+  })
+
+  it('renders with many bullets without layout issues', () => {
+    const manyBullets = Array.from({ length: 20 }, (_, i) => `Bullet ${i + 1}`)
+    render(<TimelineItem title="Test" dates="2024" bullets={manyBullets} />)
+    expect(screen.getByText('Bullet 1')).toBeInTheDocument()
+    expect(screen.getByText('Bullet 20')).toBeInTheDocument()
+  })
 })

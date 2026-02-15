@@ -1,6 +1,10 @@
-import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, it, expect, afterEach } from 'vitest'
+import { render, screen, within } from '@testing-library/react'
 import App from './App'
+
+afterEach(() => {
+  window.location.hash = ''
+})
 
 describe('App', () => {
   it('renders without crashing', async () => {
@@ -11,7 +15,6 @@ describe('App', () => {
   it('renders nav with all links', async () => {
     render(<App />)
     const nav = await screen.findByRole('navigation')
-    const { within } = await import('@testing-library/react')
     const navScope = within(nav)
     expect(navScope.getByRole('link', { name: /home/i })).toBeInTheDocument()
     expect(navScope.getByRole('link', { name: /^career$/i })).toBeInTheDocument()
@@ -23,6 +26,10 @@ describe('App', () => {
     window.location.hash = '#/nonexistent'
     render(<App />)
     expect(await screen.findByText(/page not found/i)).toBeInTheDocument()
-    window.location.hash = ''
+  })
+
+  it('wraps pages in a main element', () => {
+    const { container } = render(<App />)
+    expect(container.querySelector('main')).toBeInTheDocument()
   })
 })

@@ -42,4 +42,28 @@ describe('ScrollReveal', () => {
     const { container } = render(<ScrollReveal className="mt-4"><p>Test</p></ScrollReveal>)
     expect(container.firstChild.className).toContain('mt-4')
   })
+
+  it('renders with no children without crashing', () => {
+    expect(() => render(<ScrollReveal />)).not.toThrow()
+  })
+
+  it('stays visible once revealed (does not re-hide)', () => {
+    const { container } = render(<ScrollReveal><p>Test</p></ScrollReveal>)
+
+    act(() => {
+      IntersectionObserver.trigger(true)
+    })
+    expect(container.firstChild.className).toContain('opacity-100')
+
+    // Triggering false after already visible should NOT re-hide
+    act(() => {
+      IntersectionObserver.trigger(false)
+    })
+    expect(container.firstChild.className).toContain('opacity-100')
+  })
+
+  it('defaults delay to 0ms when not specified', () => {
+    const { container } = render(<ScrollReveal><p>Test</p></ScrollReveal>)
+    expect(container.firstChild.style.transitionDelay).toBe('0ms')
+  })
 })

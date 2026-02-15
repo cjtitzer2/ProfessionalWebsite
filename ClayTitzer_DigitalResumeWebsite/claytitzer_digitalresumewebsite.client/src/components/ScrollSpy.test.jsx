@@ -56,4 +56,41 @@ describe('ScrollSpy', () => {
     unmount()
     expect(window.removeEventListener).toHaveBeenCalledWith('scroll', expect.any(Function))
   })
+
+  it('does not crash with empty sections array', () => {
+    expect(() => render(<ScrollSpy sections={[]} />)).not.toThrow()
+  })
+
+  it('handles single section without crashing', () => {
+    render(<ScrollSpy sections={['Only']} />)
+    expect(screen.getByText('Only')).toBeInTheDocument()
+  })
+
+  it('handles scroll when page has no scrollable height', () => {
+    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 1000, configurable: true })
+    Object.defineProperty(window, 'innerHeight', { value: 1000, configurable: true })
+
+    const { container } = render(<ScrollSpy sections={sections} />)
+
+    act(() => {
+      scrollHandler?.()
+    })
+
+    // Progress bar should be at 0% when no scrollable content
+    const progressFill = container.querySelector('[style*="height"]')
+    expect(progressFill.style.height).toBe('0%')
+  })
+
+  it('clamps progress at 100% when overscrolled', () => {
+    const { container } = render(<ScrollSpy sections={sections} />)
+
+    act(() => {
+      // Simulate overscroll (scrollY > docHeight, common on mobile bounce)
+      Object.defineProperty(window, 'scrollY', { value: 1500, configurable: true })
+      scrollHandler?.()
+    })
+
+    const progressFill = container.querySelector('[style*="height"]')
+    expect(progressFill.style.height).toBe('100%')
+  })
 })

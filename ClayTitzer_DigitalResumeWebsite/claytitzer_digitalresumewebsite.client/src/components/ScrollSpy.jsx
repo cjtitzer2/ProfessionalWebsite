@@ -35,7 +35,7 @@ export default function ScrollSpy({ sections }) {
 
       <div className="absolute inset-0 flex flex-col justify-between items-center py-0">
         {sections.map((label, i) => (
-          <div key={label} className="group relative flex items-center">
+          <div key={i} className="group relative flex items-center">
             <div
               className={`w-2.5 h-2.5 rounded-full border-2 transition-all duration-200 ${
                 i === activeIndex
