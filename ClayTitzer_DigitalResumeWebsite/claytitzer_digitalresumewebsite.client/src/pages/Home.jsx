@@ -29,6 +29,7 @@ export default function Home() {
   const [scrollRatio, setScrollRatio] = useState(0)
   const [sectionProgress, setSectionProgress] = useState({ hero: 0, role: 0, content: 0, philosophy: 0 })
   const [activeSection, setActiveSection] = useState('hero')
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const heroRef = useRef(null)
   const roleRef = useRef(null)
   const contentRef = useRef(null)
@@ -66,6 +67,14 @@ export default function Home() {
     }
   }, [])
 
+  useEffect(() => {
+    const onMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY })
+    }
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
+    return () => window.removeEventListener('mousemove', onMouseMove)
+  }, [])
+
   const copyEmail = async () => {
     try {
       if (navigator?.clipboard?.writeText) {
@@ -91,6 +100,11 @@ export default function Home() {
 
   return (
     <div className="home-scroll-story">
+      <span
+        className="cursor-glow"
+        aria-hidden="true"
+        style={{ transform: `translate3d(${mousePosition.x - 180}px, ${mousePosition.y - 180}px, 0)` }}
+      />
       <aside className="section-progress-nav" aria-label="Page section progress">
         <div className="section-progress-track" aria-hidden="true">
           <span
@@ -122,10 +136,6 @@ export default function Home() {
           <span
             className="hero-orb hero-orb-b"
             style={{ transform: `translateY(${scrollRatio * -65}px) scale(${1 + scrollRatio * 0.06})` }}
-          />
-          <span
-            className="hero-grid"
-            style={{ transform: `translateY(${scrollRatio * 45}px)` }}
           />
         </div>
 
