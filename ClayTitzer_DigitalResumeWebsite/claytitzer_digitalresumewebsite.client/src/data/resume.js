@@ -129,3 +129,39 @@ export const contact = {
     { label: 'GitHub', url: 'https://github.com/cjtitzer2' },
   ],
 }
+
+
+export const playbooks = [
+  {
+    name: 'Intake Triage Flow',
+    summary: 'Classifies incoming requests and routes each case to the right queue with priority logic.',
+    phase: 'Intake',
+    domain: 'Operations',
+    tools: ['UiPath', 'SQL', 'API'],
+    outcome: 'Reduces manual triage steps and improves response consistency.',
+  },
+  {
+    name: 'Exception Recovery Pattern',
+    summary: 'Retries transient failures, tags root cause, and requeues items with escalation thresholds.',
+    phase: 'Recovery',
+    domain: 'Reliability',
+    tools: ['UiPath', 'Orchestrator', 'Excel'],
+    outcome: 'Improves unattended run stability and shortens incident resolution time.',
+  },
+  {
+    name: 'Validation Gate Pattern',
+    summary: 'Validates source data completeness before execution and sends clear feedback to requestors.',
+    phase: 'Validation',
+    domain: 'Data Quality',
+    tools: ['C#', 'SQL', 'Power Automate'],
+    outcome: 'Prevents downstream failures caused by malformed or incomplete records.',
+  },
+  {
+    name: 'Monitoring and Alert Handshake',
+    summary: 'Captures runtime telemetry and routes actionable alerts to owners with contextual metadata.',
+    phase: 'Monitoring',
+    domain: 'Support',
+    tools: ['Azure DevOps', 'API', 'SQL'],
+    outcome: 'Speeds up support triage and increases visibility into automation health.',
+  },
+]
