@@ -27,7 +27,9 @@ function getScrollRatio() {
 export default function Home() {
   const [copied, setCopied] = useState(false)
   const [scrollRatio, setScrollRatio] = useState(0)
-  const [sectionProgress, setSectionProgress] = useState({ role: 0, content: 0, philosophy: 0 })
+  const [sectionProgress, setSectionProgress] = useState({ hero: 0, role: 0, content: 0, philosophy: 0 })
+  const [activeSection, setActiveSection] = useState('hero')
+  const heroRef = useRef(null)
   const roleRef = useRef(null)
   const contentRef = useRef(null)
   const philosophyRef = useRef(null)
@@ -45,12 +47,15 @@ export default function Home() {
 
   useEffect(() => {
     const onScroll = () => {
+      const hero = getSectionProgress(heroRef.current)
+      const role = getSectionProgress(roleRef.current)
+      const content = getSectionProgress(contentRef.current)
+      const philosophy = getSectionProgress(philosophyRef.current)
+      const sectionMap = { hero, role, content, philosophy }
+      const nextActive = Object.entries(sectionMap).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'hero'
       setScrollRatio(getScrollRatio())
-      setSectionProgress({
-        role: getSectionProgress(roleRef.current),
-        content: getSectionProgress(contentRef.current),
-        philosophy: getSectionProgress(philosophyRef.current),
-      })
+      setSectionProgress(sectionMap)
+      setActiveSection(nextActive)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -73,9 +78,42 @@ export default function Home() {
     }
   }
 
+  const navSections = [
+    { id: 'hero', label: 'Hero', ref: heroRef },
+    { id: 'role', label: 'Current Role', ref: roleRef },
+    { id: 'content', label: 'Details', ref: contentRef },
+    { id: 'philosophy', label: 'Philosophy', ref: philosophyRef },
+  ]
+
+  const scrollToSection = (sectionRef) => {
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <div className="home-scroll-story">
-      <section className="story-section hero-stage">
+      <aside className="section-progress-nav" aria-label="Page section progress">
+        <div className="section-progress-track" aria-hidden="true">
+          <span
+            className="section-progress-fill"
+            style={{ transform: `scaleY(${Math.max(scrollRatio, 0.03)})` }}
+          />
+        </div>
+        <div className="section-progress-links">
+          {navSections.map((section) => (
+            <button
+              key={section.id}
+              type="button"
+              onClick={() => scrollToSection(section.ref)}
+              className={`section-progress-link ${activeSection === section.id ? 'is-active' : ''}`}
+              aria-current={activeSection === section.id ? 'location' : undefined}
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
+      </aside>
+
+      <section ref={heroRef} className="story-section hero-stage">
         <div className="hero-scroll-bg" aria-hidden="true">
           <span
             className="hero-orb hero-orb-a"
@@ -206,7 +244,7 @@ export default function Home() {
 
           <article className="stream-lane stream-actions">
             <SectionLabel>Quick Actions</SectionLabel>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 quick-actions-stack">
               <button onClick={copyEmail} className="lux-action-btn cursor-pointer">
                 {copied ? 'Email copied to clipboard' : 'Copy email'}
               </button>
