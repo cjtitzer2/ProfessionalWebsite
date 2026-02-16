@@ -2,7 +2,6 @@ import { lazy, Suspense, Component } from 'react'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import Nav from './components/Nav'
 import ScrollToTop from './components/ScrollToTop'
-import AutomationArtifact from './components/AutomationArtifact'
 
 const Home = lazy(() => import('./pages/Home'))
 const Career = lazy(() => import('./pages/Career'))
@@ -61,7 +60,6 @@ export default function App() {
     <HashRouter>
       <ScrollToTop />
       <Nav />
-      <AutomationArtifact />
       <main>
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
