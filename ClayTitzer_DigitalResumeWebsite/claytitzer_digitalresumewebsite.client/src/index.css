@@ -420,52 +420,6 @@ html.dark .bento-card:hover {
   border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
 }
 
-@keyframes ring-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.automation-ring-shell {
-  position: relative;
-  width: 170px;
-  height: 170px;
-  margin: 0 auto;
-  display: grid;
-  place-items: center;
-}
-
-.automation-ring {
-  position: absolute;
-  border-radius: 999px;
-}
-
-.automation-ring-outer {
-  inset: 0;
-  border: 1px dashed color-mix(in srgb, var(--color-divider) 80%, transparent);
-  animation: ring-spin 17s linear infinite;
-}
-
-.automation-ring-inner {
-  inset: 22px;
-  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
-  animation: ring-spin 10s linear infinite reverse;
-}
-
-.automation-core {
-  width: 72px;
-  height: 72px;
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
-  background: color-mix(in srgb, var(--color-accent-light) 85%, transparent);
-  color: var(--color-accent);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
 .flow-rail {
   display: flex;
   align-items: center;
@@ -718,8 +672,6 @@ html.dark .bento-card:hover {
   .terminal-shell,
   .code-lines,
   .workflow-packet,
-  .automation-ring-outer,
-  .automation-ring-inner,
   .flow-pulse {
     animation: none !important;
   }

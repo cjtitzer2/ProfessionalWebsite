@@ -89,16 +89,10 @@ export default function Home() {
       </section>
 
       <section className="automation-studio-fluid mb-6">
-        <SectionLabel>Automation Studio</SectionLabel>
+        <SectionLabel>Automation Philosophy</SectionLabel>
         <p className="text-sm text-charcoal/72 m-0 mb-4 max-w-3xl">
-          Conceptual orchestration view focused on how work moves through enterprise automation delivery.
+          How I design reliable enterprise automation: clear intake, strict validation, deterministic routing, and recoverable execution.
         </p>
-
-        <div className="automation-ring-shell mb-4" aria-hidden="true">
-          <div className="automation-ring automation-ring-outer" />
-          <div className="automation-ring automation-ring-inner" />
-          <div className="automation-core">RPA</div>
-        </div>
 
         <div className="flow-rail mb-4" aria-hidden="true">
           {flowStages.map((stage, index) => (
