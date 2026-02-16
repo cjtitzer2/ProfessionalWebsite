@@ -718,7 +718,8 @@ html:not(.dark) .home-scroll-story::before {
   background:
     radial-gradient(circle at center, color-mix(in srgb, var(--color-accent) 56%, transparent) 0%, color-mix(in srgb, var(--color-accent) 24%, transparent) 34%, transparent 70%),
     radial-gradient(circle at center, color-mix(in srgb, white 36%, transparent) 0%, transparent 58%);
-  transition: transform 120ms linear;
+  transition: none;
+  will-change: transform;
 }
 
 html.dark .cursor-glow {

@@ -30,7 +30,9 @@ export default function Home() {
   const [heroGridFade, setHeroGridFade] = useState(1)
   const [sectionProgress, setSectionProgress] = useState({ hero: 0, role: 0, content: 0, philosophy: 0 })
   const [activeSection, setActiveSection] = useState('hero')
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const cursorGlowRef = useRef(null)
+  const pointerTargetRef = useRef({ x: 0, y: 0 })
+  const rafRef = useRef(null)
   const heroRef = useRef(null)
   const roleRef = useRef(null)
   const contentRef = useRef(null)
@@ -75,10 +77,24 @@ export default function Home() {
 
   useEffect(() => {
     const onMouseMove = (event) => {
-      setMousePosition({ x: event.clientX, y: event.clientY })
+      pointerTargetRef.current = { x: event.clientX, y: event.clientY }
     }
+
+    const animateGlow = () => {
+      const glow = cursorGlowRef.current
+      if (glow) {
+        const { x, y } = pointerTargetRef.current
+        glow.style.transform = `translate3d(${x - 220}px, ${y - 220}px, 0)`
+      }
+      rafRef.current = window.requestAnimationFrame(animateGlow)
+    }
+
+    rafRef.current = window.requestAnimationFrame(animateGlow)
     window.addEventListener('mousemove', onMouseMove, { passive: true })
-    return () => window.removeEventListener('mousemove', onMouseMove)
+    return () => {
+      if (rafRef.current) window.cancelAnimationFrame(rafRef.current)
+      window.removeEventListener('mousemove', onMouseMove)
+    }
   }, [])
 
   const copyEmail = async () => {
@@ -107,9 +123,9 @@ export default function Home() {
   return (
     <div className="home-scroll-story" style={{ '--grid-fade': `${heroGridFade}` }}>
       <span
+        ref={cursorGlowRef}
         className="cursor-glow"
         aria-hidden="true"
-        style={{ transform: `translate3d(${mousePosition.x - 220}px, ${mousePosition.y - 220}px, 0)` }}
       />
       <aside className="section-progress-nav" aria-label="Page section progress">
         <div className="section-progress-track" aria-hidden="true">
