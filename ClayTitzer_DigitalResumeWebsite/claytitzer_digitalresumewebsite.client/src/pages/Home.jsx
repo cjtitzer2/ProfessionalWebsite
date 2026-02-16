@@ -10,7 +10,13 @@ const topSkills = (skills ?? []).flatMap((group) => group.items ?? []).slice(0, 
 const educationItems = education ?? []
 const contactLinks = contact?.links ?? []
 const featuredPlaybook = playbooks[0] ?? null
-const workflowStages = ['Trigger', 'Validate', 'Queue', 'Execute', 'Recover']
+const workflowStages = [
+  { title: 'Intake', detail: 'Capture request and required context' },
+  { title: 'Validation', detail: 'Check rules, completeness, and constraints' },
+  { title: 'Routing', detail: 'Send to the right queue and priority lane' },
+  { title: 'Execution', detail: 'Run deterministic bot workflow steps' },
+  { title: 'Recovery', detail: 'Retry, escalate, and log cleanly' },
+]
 const workflowPrinciples = ['Exception-first design', 'Reusable components', 'Deterministic routing']
 
 function BentoCard({ to, delay = 0, className = '', label = '', children }) {
@@ -180,7 +186,7 @@ export default function Home() {
         </BentoCard>
 
         {/* Quick Actions Card */}
-        <div className="bento-card bento-card-entrance" style={{ animationDelay: '475ms' }}>
+        <div className="bento-card bento-card-entrance lg:col-span-2" style={{ animationDelay: '475ms' }}>
           <SectionLabel>Quick Actions</SectionLabel>
           <div className="flex flex-col gap-2">
             <button
@@ -210,18 +216,18 @@ export default function Home() {
 
         {/* Automation Pulse Card */}
         <div
-          className="bento-card bento-card-entrance automation-pulse-card relative overflow-hidden"
+          className="bento-card bento-card-entrance lg:col-span-2 automation-pulse-card relative overflow-hidden"
           style={{ animationDelay: '525ms' }}
         >
           <SectionLabel>Automation Studio</SectionLabel>
           <p className="text-xs text-charcoal/70 m-0 mb-3 relative z-10">
-            Concept workflow view inspired by enterprise automation architecture.
+            A conceptual enterprise automation lifecycle, not live telemetry.
           </p>
 
           <div className="workflow-track relative z-10 mb-3" aria-hidden="true">
             {workflowStages.map((stage, index) => (
-              <div key={stage} className="workflow-segment">
-                <span className="workflow-node">{stage}</span>
+              <div key={stage.title} className="workflow-segment">
+                <span className="workflow-node">{stage.title}</span>
                 {index < workflowStages.length - 1 && (
                   <span className="workflow-link">
                     <span className="workflow-packet" />
@@ -233,11 +239,20 @@ export default function Home() {
 
           <div className="mt-4 rounded-lg border border-divider/60 bg-charcoal/[0.03] p-3 relative z-10 overflow-hidden terminal-shell" aria-hidden="true">
             <div className="code-lines space-y-1.5">
-              <p className="font-mono text-[11px] text-accent/90 m-0">$ automation run --template standard-intake</p>
-              <p className="font-mono text-[11px] text-slate m-0">[stage] input validated, branching to queue</p>
-              <p className="font-mono text-[11px] text-slate m-0">[stage] executor started with recovery profile</p>
-              <p className="font-mono text-[11px] text-slate m-0 terminal-cursor">[flow] orchestration pipeline active</p>
+              <p className="font-mono text-[11px] text-accent/90 m-0">workflow.template = standard-intake</p>
+              <p className="font-mono text-[11px] text-slate m-0">validation.result = pass</p>
+              <p className="font-mono text-[11px] text-slate m-0">routing.queue = operations-priority</p>
+              <p className="font-mono text-[11px] text-slate m-0 terminal-cursor">status = orchestration-active</p>
             </div>
+          </div>
+
+          <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2 relative z-10">
+            {workflowStages.map((stage) => (
+              <div key={`detail-${stage.title}`} className="rounded-md border border-divider/60 px-2.5 py-2 bg-offwhite/70">
+                <p className="font-mono text-[10px] uppercase tracking-wider text-accent m-0">{stage.title}</p>
+                <p className="text-[11px] leading-relaxed text-slate m-0 mt-0.5">{stage.detail}</p>
+              </div>
+            ))}
           </div>
 
           <div className="mt-3 flex flex-wrap gap-2 relative z-10">
@@ -265,7 +280,7 @@ export default function Home() {
           </div>
         </div>
         {/* Contact Card */}
-        <BentoCard to="/contact" delay={500} label="View contact details">
+        <BentoCard to="/contact" delay={500} label="View contact details" className="lg:col-span-2">
           <SectionLabel>Contact</SectionLabel>
           <p className="text-sm text-charcoal/70 m-0 mb-2">{contact.email}</p>
           <p className="text-xs text-slate m-0">{contact.location}</p>
