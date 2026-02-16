@@ -36,10 +36,7 @@ export default function Home() {
 
   return (
     <div className="home-v3 relative max-w-[110rem] mx-auto px-4 md:px-8 xl:px-12 pt-10 pb-28">
-      <div className="home-v3-blur home-v3-blur-left" aria-hidden="true" />
-      <div className="home-v3-blur home-v3-blur-right" aria-hidden="true" />
-
-      <section className="hero-fluid relative overflow-hidden mb-6">
+      <section className="hero-fluid relative overflow-hidden mb-8">
         <ParticleGrid />
         <div className="relative z-10">
           <SectionLabel>Portfolio</SectionLabel>
@@ -70,7 +67,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="role-ribbon mb-6">
+      <section className="role-ribbon mb-10">
         <div className="role-ribbon-main">
           <SectionLabel>Current Role</SectionLabel>
           {current && (
@@ -88,27 +85,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="automation-studio-fluid mb-6">
-        <SectionLabel>Automation Philosophy</SectionLabel>
-        <p className="text-sm text-charcoal/72 m-0 mb-4 max-w-3xl">
-          How I design reliable enterprise automation: clear intake, strict validation, deterministic routing, and recoverable execution.
-        </p>
-
-        <div className="flow-rail mb-4" aria-hidden="true">
-          {flowStages.map((stage, index) => (
-            <div key={stage} className="flow-stage">
-              <span>{stage}</span>
-              {index < flowStages.length - 1 && (
-                <div className="flow-connector">
-                  <span className="flow-pulse" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="content-stream">
+      <section className="content-stream mb-10">
         <article className="stream-lane stream-education">
           <SectionLabel>Education</SectionLabel>
           <div className="space-y-3 mb-3">
@@ -185,6 +162,32 @@ export default function Home() {
             ))}
           </div>
         </article>
+      </section>
+
+      <section className="philosophy-band">
+        <SectionLabel>Automation Philosophy</SectionLabel>
+        <p className="text-sm text-charcoal/72 m-0 mb-5 max-w-3xl">
+          Reliable automation is built as an operating system: strict inputs, intentional routing, deterministic execution, and graceful recovery.
+        </p>
+
+        <div className="flow-rail mb-5" aria-hidden="true">
+          {flowStages.map((stage, index) => (
+            <div key={stage} className="flow-stage">
+              <span>{stage}</span>
+              {index < flowStages.length - 1 && (
+                <div className="flow-connector">
+                  <span className="flow-pulse" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="philosophy-points">
+          <p className="m-0">Validate early so failures are prevented before execution begins.</p>
+          <p className="m-0">Route work predictably so ownership and priority stay clear.</p>
+          <p className="m-0">Design for recovery so automation remains resilient in production.</p>
+        </div>
       </section>
     </div>
   )
