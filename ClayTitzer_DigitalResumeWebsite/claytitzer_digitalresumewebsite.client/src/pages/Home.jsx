@@ -109,7 +109,7 @@ export default function Home() {
       <span
         className="cursor-glow"
         aria-hidden="true"
-        style={{ transform: `translate3d(${mousePosition.x - 180}px, ${mousePosition.y - 180}px, 0)` }}
+        style={{ transform: `translate3d(${mousePosition.x - 220}px, ${mousePosition.y - 220}px, 0)` }}
       />
       <aside className="section-progress-nav" aria-label="Page section progress">
         <div className="section-progress-track" aria-hidden="true">
@@ -135,14 +135,22 @@ export default function Home() {
 
       <section ref={heroRef} className="story-section hero-stage">
         <div className="hero-scroll-bg" aria-hidden="true">
-          <span
-            className="hero-orb hero-orb-a"
-            style={{ transform: `translateY(${scrollRatio * 80}px) scale(${1 + scrollRatio * 0.08})` }}
-          />
-          <span
-            className="hero-orb hero-orb-b"
-            style={{ transform: `translateY(${scrollRatio * -65}px) scale(${1 + scrollRatio * 0.06})` }}
-          />
+          <div
+            className="hero-workflow"
+            style={{ transform: `translateY(${scrollRatio * 44}px) scale(${1 + scrollRatio * 0.05})` }}
+          >
+            <span className="hero-workflow-link workflow-link-ab" />
+            <span className="hero-workflow-link workflow-link-bc" />
+            <span className="hero-workflow-link workflow-link-cd" />
+            <span className="hero-workflow-link workflow-link-ce" />
+            <span className="hero-workflow-link workflow-link-be" />
+
+            <span className="hero-workflow-node workflow-node-a" />
+            <span className="hero-workflow-node workflow-node-b" />
+            <span className="hero-workflow-node workflow-node-c" />
+            <span className="hero-workflow-node workflow-node-d" />
+            <span className="hero-workflow-node workflow-node-e" />
+          </div>
         </div>
 
         <div className="story-center hero-content">
