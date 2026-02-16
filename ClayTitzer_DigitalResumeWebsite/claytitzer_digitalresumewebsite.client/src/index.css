@@ -1,30 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-charcoal: #1a1a2e;
-  --color-offwhite: #f8f7f4;
-  --color-slate: #6b7280;
-  --color-accent: #5b21b6;
-  --color-accent-hover: #7c3aed;
-  --color-accent-light: #ede9fe;
-  --color-gold: #b8860b;
-  --color-gold-light: #f5f0e6;
-  --color-divider: #d6d3d1;
+  --color-charcoal: #0f172a;
+  --color-offwhite: #f1f5f9;
+  --color-slate: #64748b;
+  --color-accent: #06b6d4;
+  --color-accent-hover: #0891b2;
+  --color-accent-light: #ecfeff;
+  --color-divider: #cbd5e1;
 
   --font-sans: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: "SF Mono", "Cascadia Code", "Fira Code", monospace;
 }
 
 html.dark {
-  --color-charcoal: #e8e6e3;
-  --color-offwhite: #121220;
-  --color-slate: #9ca3af;
-  --color-accent: #7c3aed;
-  --color-accent-hover: #8b5cf6;
-  --color-accent-light: #1e1b4b;
-  --color-gold: #d4a017;
-  --color-gold-light: #1a1a14;
-  --color-divider: #2d2d44;
+  --color-charcoal: #e2e8f0;
+  --color-offwhite: #0a0f1a;
+  --color-slate: #94a3b8;
+  --color-accent: #22d3ee;
+  --color-accent-hover: #67e8f9;
+  --color-accent-light: #0e2a32;
+  --color-divider: #1e293b;
 }
 
 body {
@@ -48,5 +44,215 @@ body {
   &::before {
     content: '';
     @apply absolute left-0 top-[9px] w-1.5 h-px bg-accent/40;
+  }
+}
+
+/* ── Keyframe Animations ── */
+
+@keyframes typing-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes draw-line {
+  from { height: 0; }
+  to { height: 100%; }
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); opacity: 1; }
+  20% { transform: translate(-2px, 1px); opacity: 0.8; }
+  40% { transform: translate(2px, -1px); opacity: 0.9; }
+  60% { transform: translate(-1px, -1px); opacity: 0.85; }
+  80% { transform: translate(1px, 2px); opacity: 0.95; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes grid-dot {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.25); }
+}
+
+@keyframes card-entrance {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Component Classes ── */
+
+.bento-card {
+  background: var(--color-offwhite);
+  border: 1px solid var(--color-divider);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+html.dark .bento-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bento-card-entrance {
+  animation: card-entrance 0.5s ease-out both;
+}
+
+@keyframes orb-float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -12px, 0) scale(1.04); }
+}
+
+@keyframes aurora-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(2px);
+  animation: orb-float 6s ease-in-out infinite;
+}
+
+.ambient-orb-cyan {
+  background: radial-gradient(circle at center, rgba(6, 182, 212, 0.26), rgba(6, 182, 212, 0));
+}
+
+.ambient-orb-glow {
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.22), rgba(16, 185, 129, 0));
+}
+
+.playbook-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.playbook-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  padding: 1px;
+  background: linear-gradient(120deg, rgba(6, 182, 212, 0.35), rgba(16, 185, 129, 0.35), rgba(6, 182, 212, 0.35));
+  background-size: 220% 220%;
+  animation: aurora-shift 5s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.automation-pulse-card::after {
+  content: '';
+  position: absolute;
+  inset: -20% auto -20% -70%;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+  transform: skewX(-18deg);
+  animation: pulse-scan 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-scan {
+  0% { transform: translateX(0) skewX(-18deg); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(320%) skewX(-18deg); opacity: 0; }
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.orbit-cluster {
+  width: 170px;
+  height: 170px;
+  display: grid;
+  place-items: center;
+}
+
+.orbit-ring {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border: 1px dashed color-mix(in srgb, var(--color-accent) 45%, transparent);
+  border-radius: 9999px;
+  animation: orbit-spin 20s linear infinite;
+}
+
+.orbit-ring-reverse {
+  width: 92px;
+  height: 92px;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--color-divider) 70%, transparent);
+  animation-direction: reverse;
+  animation-duration: 13s;
+}
+
+.orbit-node {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-charcoal) 78%, transparent);
+  font-family: var(--font-mono);
+  transform-origin: 0 0;
+}
+
+.orbit-ring .orbit-node:nth-child(1) { transform: rotate(0deg) translateX(65px) translate(-50%, -50%); }
+.orbit-ring .orbit-node:nth-child(2) { transform: rotate(120deg) translateX(65px) translate(-50%, -50%); }
+.orbit-ring .orbit-node:nth-child(3) { transform: rotate(240deg) translateX(65px) translate(-50%, -50%); }
+.orbit-ring-reverse .orbit-node:nth-child(1) { transform: rotate(40deg) translateX(46px) translate(-50%, -50%); }
+.orbit-ring-reverse .orbit-node:nth-child(2) { transform: rotate(170deg) translateX(46px) translate(-50%, -50%); }
+.orbit-ring-reverse .orbit-node:nth-child(3) { transform: rotate(300deg) translateX(46px) translate(-50%, -50%); }
+
+.orbit-core {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent-light) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-card-entrance,
+  .ambient-orb,
+  .playbook-card::before,
+  .automation-pulse-card::after,
+  .orbit-ring,
+  .orbit-ring-reverse {
+    animation: none !important;
   }
 }
