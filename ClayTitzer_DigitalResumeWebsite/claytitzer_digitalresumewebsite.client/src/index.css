@@ -709,8 +709,8 @@ html:not(.dark) .home-scroll-story::before {
   position: fixed;
   top: 0;
   left: 0;
-  width: 440px;
-  height: 440px;
+  width: 264px;
+  height: 264px;
   border-radius: 999px;
   pointer-events: none;
   z-index: -1;

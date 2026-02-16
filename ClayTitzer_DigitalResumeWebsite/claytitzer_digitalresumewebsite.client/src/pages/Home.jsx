@@ -84,7 +84,7 @@ export default function Home() {
       const glow = cursorGlowRef.current
       if (glow) {
         const { x, y } = pointerTargetRef.current
-        glow.style.transform = `translate3d(${x - 220}px, ${y - 220}px, 0)`
+        glow.style.transform = `translate3d(${x - 132}px, ${y - 132}px, 0)`
       }
       rafRef.current = window.requestAnimationFrame(animateGlow)
     }
