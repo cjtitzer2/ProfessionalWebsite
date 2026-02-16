@@ -454,6 +454,10 @@ html.dark .bento-card:hover {
   overflow: hidden;
 }
 
+html:not(.dark) .flow-connector {
+  background: color-mix(in srgb, var(--color-divider) 92%, transparent);
+}
+
 @keyframes flow-pulse {
   0% { transform: translateX(-10px); opacity: 0; }
   30% { opacity: 1; }
@@ -549,6 +553,10 @@ html.dark .bento-card:hover {
   padding: 1rem 1.1rem;
 }
 
+html:not(.dark) .role-ribbon {
+  border-color: color-mix(in srgb, var(--color-divider) 90%, transparent);
+}
+
 .role-ribbon-main {
   padding-right: 0.5rem;
 }
@@ -582,9 +590,18 @@ html.dark .bento-card:hover {
   padding: 1rem 0.95rem 0.95rem;
 }
 
+html:not(.dark) .stream-lane {
+  border: 1px solid color-mix(in srgb, var(--color-divider) 90%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 78%, transparent);
+}
+
 .stream-entry {
   padding: 0.45rem 0;
   border-bottom: 1px solid color-mix(in srgb, var(--color-divider) 48%, transparent);
+}
+
+html:not(.dark) .stream-entry {
+  border-bottom-color: color-mix(in srgb, var(--color-divider) 82%, transparent);
 }
 
 .stream-education { grid-column: span 3; }
@@ -626,6 +643,11 @@ html.dark .bento-card:hover {
   border-top: 1px solid color-mix(in srgb, var(--color-divider) 70%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--color-divider) 70%, transparent);
   padding: 1.1rem 0.2rem 0.9rem;
+}
+
+html:not(.dark) .philosophy-band {
+  border-top-color: color-mix(in srgb, var(--color-divider) 90%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--color-divider) 90%, transparent);
 }
 
 .philosophy-points {
@@ -716,6 +738,13 @@ html.dark .bento-card:hover {
   background-size: 34px 34px;
 }
 
+html:not(.dark) .hero-grid {
+  opacity: 0.42;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-divider) 82%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-divider) 82%, transparent) 1px, transparent 1px);
+}
+
 .role-stage,
 .content-stage,
 .philosophy-stage {
@@ -723,6 +752,12 @@ html.dark .bento-card:hover {
   transition: transform 420ms ease, opacity 420ms ease;
   transform: translateY(calc((1 - var(--section-progress, 0)) * 26px));
   opacity: calc(0.76 + var(--section-progress, 0) * 0.24);
+}
+
+html:not(.dark) .role-stage,
+html:not(.dark) .content-stage,
+html:not(.dark) .philosophy-stage {
+  border-top-color: color-mix(in srgb, var(--color-divider) 94%, transparent);
 }
 
 .role-bullet-flow {
