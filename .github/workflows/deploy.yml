@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
 
       - uses: actions/setup-node@v4
         with:
@@ -33,14 +34,12 @@ jobs:
       - name: Build
         working-directory: ClayTitzer_DigitalResumeWebsite/claytitzer_digitalresumewebsite.client
         run: npm run build
-        env:
-          VITE_BASE_PATH: /ProfessionalWebsite/
 
       - name: Validate Pages artifact
         working-directory: ClayTitzer_DigitalResumeWebsite/claytitzer_digitalresumewebsite.client
         run: |
           test -f dist/index.html
-          grep -q '/ProfessionalWebsite/assets/' dist/index.html
+          grep -q './assets/' dist/index.html
 
       - uses: actions/upload-pages-artifact@v3
         with:
