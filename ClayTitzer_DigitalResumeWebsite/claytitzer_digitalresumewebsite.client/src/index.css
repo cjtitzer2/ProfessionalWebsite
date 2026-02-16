@@ -645,6 +645,117 @@ html.dark .bento-card:hover {
   vertical-align: middle;
 }
 
+.home-scroll-story {
+  position: relative;
+}
+
+.story-section {
+  min-height: 96vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 2rem 0;
+}
+
+.story-center {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.hero-stage {
+  min-height: 100vh;
+}
+
+.hero-content {
+  padding-top: 4rem;
+  padding-bottom: 5rem;
+}
+
+.hero-scroll-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-divider) 70%, transparent);
+  background: color-mix(in srgb, var(--color-accent-light) 55%, transparent);
+  opacity: 0.5;
+}
+
+.hero-orb-a {
+  width: 340px;
+  height: 340px;
+  right: -120px;
+  top: 12%;
+}
+
+.hero-orb-b {
+  width: 260px;
+  height: 260px;
+  left: -90px;
+  bottom: 10%;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-divider) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-divider) 55%, transparent) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.role-stage,
+.content-stage,
+.philosophy-stage {
+  border-top: 1px solid color-mix(in srgb, var(--color-divider) 60%, transparent);
+}
+
+.role-bullet-flow {
+  display: grid;
+  gap: 0.65rem;
+  max-width: 52rem;
+}
+
+.role-bullet-flow p::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 2px;
+  background: color-mix(in srgb, var(--color-accent) 66%, transparent);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.content-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 980px) {
+  .story-center {
+    max-width: 46rem;
+  }
+  .content-stage-grid {
+    grid-template-columns: 1fr;
+  }
+  .stream-education,
+  .stream-skills,
+  .stream-playbooks,
+  .stream-actions,
+  .stream-contact {
+    grid-column: span 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bento-card-entrance,
   .ambient-orb,
