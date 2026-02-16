@@ -39,7 +39,12 @@ jobs:
         working-directory: ClayTitzer_DigitalResumeWebsite/claytitzer_digitalresumewebsite.client
         run: |
           test -f dist/index.html
+          test -f dist/CNAME
+          grep -q '^claytitzer.com$' dist/CNAME
           grep -q './assets/' dist/index.html
+          test -d dist/assets
+          test -f dist/assets/index-*.js
+          test -f dist/assets/index-*.css
 
       - uses: actions/upload-pages-artifact@v3
         with:
