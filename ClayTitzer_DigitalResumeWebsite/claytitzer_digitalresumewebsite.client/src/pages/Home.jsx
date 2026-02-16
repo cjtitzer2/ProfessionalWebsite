@@ -2,6 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TypeWriter from '../components/TypeWriter'
 import { experience, education, skills, contact, playbooks } from '../data/resume'
+import {
+  areProgressMapsEqual,
+  getActiveSection,
+  getGlowTransform,
+  getHeroFadeFromRect,
+  getScrollRatio,
+  getSectionProgressFromRect,
+} from './homeUtils'
 
 const current = experience[0] ?? null
 const topSkills = (skills ?? []).flatMap((group) => group.items ?? []).slice(0, 10)
@@ -9,6 +17,26 @@ const educationItems = education ?? []
 const contactLinks = contact?.links ?? []
 const featuredPlaybook = playbooks[0] ?? null
 const flowStages = ['Intake', 'Validation', 'Routing', 'Execution', 'Recovery']
+const GLOW_RADIUS = 132
+const SCROLL_SECTIONS = ['hero', 'role', 'content', 'philosophy']
+const WORKFLOW_LINKS = [
+  { x1: 90, y1: 90, x2: 240, y2: 90 },
+  { x1: 240, y1: 90, x2: 400, y2: 90 },
+  { x1: 400, y1: 90, x2: 560, y2: 50 },
+  { x1: 400, y1: 90, x2: 560, y2: 190 },
+  { x1: 560, y1: 50, x2: 710, y2: 120 },
+  { x1: 560, y1: 190, x2: 710, y2: 120 },
+  { x1: 710, y1: 120, x2: 710, y2: 250 },
+]
+const WORKFLOW_NODES = [
+  { x: 72, y: 72 },
+  { x: 222, y: 72 },
+  { x: 382, y: 72, decision: true },
+  { x: 542, y: 32 },
+  { x: 542, y: 172 },
+  { x: 692, y: 102 },
+  { x: 692, y: 232 },
+]
 
 function SectionLabel({ children }) {
   return (
@@ -16,12 +44,6 @@ function SectionLabel({ children }) {
       {children}
     </p>
   )
-}
-
-function getScrollRatio() {
-  const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1)
-  const ratio = window.scrollY / maxScroll
-  return Math.max(0, Math.min(1, ratio))
 }
 
 export default function Home() {
@@ -32,51 +54,72 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState('hero')
   const cursorGlowRef = useRef(null)
   const pointerTargetRef = useRef({ x: 0, y: 0 })
-  const rafRef = useRef(null)
+  const glowRafRef = useRef(null)
+  const scrollRafRef = useRef(null)
+  const sectionProgressRef = useRef({ hero: 0, role: 0, content: 0, philosophy: 0 })
+  const activeSectionRef = useRef('hero')
+  const heroFadeRef = useRef(1)
+  const scrollRatioRef = useRef(0)
   const heroRef = useRef(null)
   const roleRef = useRef(null)
   const contentRef = useRef(null)
   const philosophyRef = useRef(null)
 
-  const getSectionProgress = (element) => {
-    if (!element) return 0
-    const rect = element.getBoundingClientRect()
-    const viewportCenter = window.innerHeight * 0.5
-    const sectionCenter = rect.top + rect.height * 0.5
-    const distance = Math.abs(viewportCenter - sectionCenter)
-    const maxDistance = Math.max(window.innerHeight * 0.8, 1)
-    const value = 1 - distance / maxDistance
-    return Math.max(0, Math.min(1, value))
-  }
-
   useEffect(() => {
-    const onScroll = () => {
-      const hero = getSectionProgress(heroRef.current)
-      const role = getSectionProgress(roleRef.current)
-      const content = getSectionProgress(contentRef.current)
-      const philosophy = getSectionProgress(philosophyRef.current)
-      const heroRect = heroRef.current?.getBoundingClientRect()
-      const heroFade = heroRect
-        ? Math.max(0, Math.min(1, heroRect.bottom / Math.max(window.innerHeight, 1)))
-        : 1
-      const sectionMap = { hero, role, content, philosophy }
-      const nextActive = Object.entries(sectionMap).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'hero'
-      setScrollRatio(getScrollRatio())
-      setHeroGridFade(heroFade)
-      setSectionProgress(sectionMap)
-      setActiveSection(nextActive)
+    const calculateScrollState = () => {
+      const viewportHeight = window.innerHeight
+      const nextSectionProgress = {
+        hero: getSectionProgressFromRect(heroRef.current?.getBoundingClientRect(), viewportHeight),
+        role: getSectionProgressFromRect(roleRef.current?.getBoundingClientRect(), viewportHeight),
+        content: getSectionProgressFromRect(contentRef.current?.getBoundingClientRect(), viewportHeight),
+        philosophy: getSectionProgressFromRect(philosophyRef.current?.getBoundingClientRect(), viewportHeight),
+      }
+      const nextHeroFade = getHeroFadeFromRect(heroRef.current?.getBoundingClientRect(), viewportHeight)
+      const nextActiveSection = getActiveSection(nextSectionProgress, 'hero')
+      const nextScrollRatio = getScrollRatio({
+        scrollHeight: document.documentElement.scrollHeight,
+        innerHeight: window.innerHeight,
+        scrollY: window.scrollY,
+      })
+
+      if (!areProgressMapsEqual(sectionProgressRef.current, nextSectionProgress)) {
+        sectionProgressRef.current = nextSectionProgress
+        setSectionProgress(nextSectionProgress)
+      }
+      if (Math.abs(heroFadeRef.current - nextHeroFade) > 0.001) {
+        heroFadeRef.current = nextHeroFade
+        setHeroGridFade(nextHeroFade)
+      }
+      if (Math.abs(scrollRatioRef.current - nextScrollRatio) > 0.001) {
+        scrollRatioRef.current = nextScrollRatio
+        setScrollRatio(nextScrollRatio)
+      }
+      if (activeSectionRef.current !== nextActiveSection && SCROLL_SECTIONS.includes(nextActiveSection)) {
+        activeSectionRef.current = nextActiveSection
+        setActiveSection(nextActiveSection)
+      }
     }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
+
+    const scheduleScrollUpdate = () => {
+      if (scrollRafRef.current) return
+      scrollRafRef.current = window.requestAnimationFrame(() => {
+        scrollRafRef.current = null
+        calculateScrollState()
+      })
+    }
+
+    calculateScrollState()
+    window.addEventListener('scroll', scheduleScrollUpdate, { passive: true })
+    window.addEventListener('resize', scheduleScrollUpdate)
     return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
+      if (scrollRafRef.current) window.cancelAnimationFrame(scrollRafRef.current)
+      window.removeEventListener('scroll', scheduleScrollUpdate)
+      window.removeEventListener('resize', scheduleScrollUpdate)
     }
   }, [])
 
   useEffect(() => {
-    const onMouseMove = (event) => {
+    const onPointerMove = (event) => {
       pointerTargetRef.current = { x: event.clientX, y: event.clientY }
     }
 
@@ -84,16 +127,16 @@ export default function Home() {
       const glow = cursorGlowRef.current
       if (glow) {
         const { x, y } = pointerTargetRef.current
-        glow.style.transform = `translate3d(${x - 132}px, ${y - 132}px, 0)`
+        glow.style.transform = getGlowTransform(x, y, GLOW_RADIUS)
       }
-      rafRef.current = window.requestAnimationFrame(animateGlow)
+      glowRafRef.current = window.requestAnimationFrame(animateGlow)
     }
 
-    rafRef.current = window.requestAnimationFrame(animateGlow)
-    window.addEventListener('mousemove', onMouseMove, { passive: true })
+    glowRafRef.current = window.requestAnimationFrame(animateGlow)
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
     return () => {
-      if (rafRef.current) window.cancelAnimationFrame(rafRef.current)
-      window.removeEventListener('mousemove', onMouseMove)
+      if (glowRafRef.current) window.cancelAnimationFrame(glowRafRef.current)
+      window.removeEventListener('pointermove', onPointerMove)
     }
   }, [])
 
@@ -156,37 +199,54 @@ export default function Home() {
             style={{ transform: `translateY(${scrollRatio * 44}px) scale(${1 + scrollRatio * 0.05})` }}
           >
             <svg className="hero-workflow-svg" viewBox="0 0 780 430" preserveAspectRatio="xMidYMid meet">
-              <line className="hero-workflow-link-base" x1="90" y1="90" x2="240" y2="90" />
-              <line className="hero-workflow-link-base" x1="240" y1="90" x2="400" y2="90" />
-              <line className="hero-workflow-link-base" x1="400" y1="90" x2="560" y2="50" />
-              <line className="hero-workflow-link-base" x1="400" y1="90" x2="560" y2="190" />
-              <line className="hero-workflow-link-base" x1="560" y1="50" x2="710" y2="120" />
-              <line className="hero-workflow-link-base" x1="560" y1="190" x2="710" y2="120" />
-              <line className="hero-workflow-link-base" x1="710" y1="120" x2="710" y2="250" />
-
-              <line className="hero-workflow-link-signal" x1="90" y1="90" x2="240" y2="90" style={{ animationDelay: '0s' }} />
-              <line className="hero-workflow-link-signal" x1="240" y1="90" x2="400" y2="90" style={{ animationDelay: '0.28s' }} />
-              <line className="hero-workflow-link-signal" x1="400" y1="90" x2="560" y2="50" style={{ animationDelay: '0.55s' }} />
-              <line className="hero-workflow-link-signal" x1="400" y1="90" x2="560" y2="190" style={{ animationDelay: '0.85s' }} />
-              <line className="hero-workflow-link-signal" x1="560" y1="50" x2="710" y2="120" style={{ animationDelay: '1.1s' }} />
-              <line className="hero-workflow-link-signal" x1="560" y1="190" x2="710" y2="120" style={{ animationDelay: '1.35s' }} />
-              <line className="hero-workflow-link-signal" x1="710" y1="120" x2="710" y2="250" style={{ animationDelay: '1.62s' }} />
-
-              <rect className="hero-workflow-node" x="72" y="72" width="36" height="36" rx="10" />
-              <rect className="hero-workflow-node" x="222" y="72" width="36" height="36" rx="10" />
-              <rect className="hero-workflow-node hero-workflow-node-decision" x="382" y="72" width="36" height="36" rx="10" />
-              <rect className="hero-workflow-node" x="542" y="32" width="36" height="36" rx="10" />
-              <rect className="hero-workflow-node" x="542" y="172" width="36" height="36" rx="10" />
-              <rect className="hero-workflow-node" x="692" y="102" width="36" height="36" rx="10" />
-              <rect className="hero-workflow-node" x="692" y="232" width="36" height="36" rx="10" />
-
-              <rect className="hero-workflow-node-core" x="84" y="84" width="12" height="12" rx="4" />
-              <rect className="hero-workflow-node-core" x="234" y="84" width="12" height="12" rx="4" />
-              <rect className="hero-workflow-node-core" x="394" y="84" width="12" height="12" rx="4" transform="rotate(45 400 90)" />
-              <rect className="hero-workflow-node-core" x="554" y="44" width="12" height="12" rx="4" />
-              <rect className="hero-workflow-node-core" x="554" y="184" width="12" height="12" rx="4" />
-              <rect className="hero-workflow-node-core" x="704" y="114" width="12" height="12" rx="4" />
-              <rect className="hero-workflow-node-core" x="704" y="244" width="12" height="12" rx="4" />
+              {WORKFLOW_LINKS.map((line) => (
+                <line
+                  key={`base-${line.x1}-${line.y1}-${line.x2}-${line.y2}`}
+                  className="hero-workflow-link-base"
+                  x1={line.x1}
+                  y1={line.y1}
+                  x2={line.x2}
+                  y2={line.y2}
+                />
+              ))}
+              {WORKFLOW_LINKS.map((line, index) => (
+                <line
+                  key={`signal-${line.x1}-${line.y1}-${line.x2}-${line.y2}`}
+                  className="hero-workflow-link-signal"
+                  x1={line.x1}
+                  y1={line.y1}
+                  x2={line.x2}
+                  y2={line.y2}
+                  style={{ animationDelay: `${index * 0.27}s` }}
+                />
+              ))}
+              {WORKFLOW_NODES.map((node) => (
+                <rect
+                  key={`node-${node.x}-${node.y}`}
+                  className={`hero-workflow-node ${node.decision ? 'hero-workflow-node-decision' : ''}`}
+                  x={node.x}
+                  y={node.y}
+                  width="36"
+                  height="36"
+                  rx="10"
+                />
+              ))}
+              {WORKFLOW_NODES.map((node) => {
+                const coreX = node.x + 12
+                const coreY = node.y + 12
+                return (
+                  <rect
+                    key={`core-${node.x}-${node.y}`}
+                    className="hero-workflow-node-core"
+                    x={coreX}
+                    y={coreY}
+                    width="12"
+                    height="12"
+                    rx="4"
+                    transform={node.decision ? `rotate(45 ${coreX + 6} ${coreY + 6})` : undefined}
+                  />
+                )
+              })}
             </svg>
           </div>
         </div>
