@@ -773,83 +773,57 @@ html.dark .cursor-glow {
   opacity: 0.9;
 }
 
-.hero-workflow-node {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--color-divider) 65%, transparent);
-  background: color-mix(in srgb, var(--color-offwhite) 78%, transparent);
-  box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--color-accent) 12%, transparent),
-    0 0 24px color-mix(in srgb, var(--color-accent) 20%, transparent);
+.hero-workflow-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.hero-workflow-node::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  transform: translate(-50%, -50%);
-  background: color-mix(in srgb, var(--color-accent) 88%, transparent);
+.hero-workflow-link-base {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-divider) 72%, transparent);
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
-.workflow-node-a { left: 7%; top: 20%; }
-.workflow-node-b { left: 33%; top: 20%; }
-.workflow-node-c { left: 57%; top: 40%; }
-.workflow-node-d { left: 82%; top: 40%; }
-.workflow-node-e { left: 57%; top: 72%; }
-
-.hero-workflow-link {
-  position: absolute;
-  height: 2px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-divider) 68%, transparent);
-  overflow: hidden;
+.hero-workflow-link-signal {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-accent) 88%, transparent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 16 120;
+  animation: workflow-trace 2.8s linear infinite;
 }
-
-.hero-workflow-link::after {
-  content: '';
-  position: absolute;
-  left: -10px;
-  top: -1px;
-  width: 12px;
-  height: 4px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-accent) 88%, transparent);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 60%, transparent);
-  animation: workflow-trace 2.7s linear infinite;
-}
-
-.workflow-link-ab { left: 9.6%; top: 22.8%; width: 24%; }
-.workflow-link-bc { left: 35.6%; top: 28.7%; width: 25.2%; transform: rotate(29deg); transform-origin: left center; }
-.workflow-link-cd { left: 59.4%; top: 42.8%; width: 24.7%; }
-.workflow-link-ce { left: 58.4%; top: 44.8%; width: 20.2%; transform: rotate(90deg); transform-origin: left center; }
-.workflow-link-be { left: 35.2%; top: 24.2%; width: 37.3%; transform: rotate(52deg); transform-origin: left center; }
 
 @keyframes workflow-trace {
-  0% { transform: translateX(0); opacity: 0; }
-  12% { opacity: 1; }
-  100% { transform: translateX(120px); opacity: 0; }
+  from { stroke-dashoffset: 136; opacity: 0; }
+  20% { opacity: 1; }
+  to { stroke-dashoffset: 0; opacity: 0; }
+}
+
+.hero-workflow-node {
+  fill: color-mix(in srgb, var(--color-offwhite) 82%, transparent);
+  stroke: color-mix(in srgb, var(--color-divider) 76%, transparent);
+  stroke-width: 1.25;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent) 26%, transparent));
+}
+
+.hero-workflow-node-core {
+  fill: color-mix(in srgb, var(--color-accent) 90%, transparent);
 }
 
 html:not(.dark) .hero-workflow {
   opacity: 1;
 }
 
-html:not(.dark) .hero-workflow-node {
-  border-color: color-mix(in srgb, var(--color-divider) 92%, var(--color-charcoal));
-  background: color-mix(in srgb, white 92%, var(--color-offwhite));
-  box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--color-accent) 16%, transparent),
-    0 0 24px color-mix(in srgb, var(--color-accent) 25%, transparent);
+html:not(.dark) .hero-workflow-link-base {
+  stroke: color-mix(in srgb, var(--color-divider) 92%, var(--color-charcoal));
 }
 
-html:not(.dark) .hero-workflow-link {
-  background: color-mix(in srgb, var(--color-divider) 90%, var(--color-charcoal));
+html:not(.dark) .hero-workflow-node {
+  fill: color-mix(in srgb, white 94%, var(--color-offwhite));
+  stroke: color-mix(in srgb, var(--color-divider) 95%, var(--color-charcoal));
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 30%, transparent));
 }
 
 .hero-orb {

@@ -139,17 +139,31 @@ export default function Home() {
             className="hero-workflow"
             style={{ transform: `translateY(${scrollRatio * 44}px) scale(${1 + scrollRatio * 0.05})` }}
           >
-            <span className="hero-workflow-link workflow-link-ab" />
-            <span className="hero-workflow-link workflow-link-bc" />
-            <span className="hero-workflow-link workflow-link-cd" />
-            <span className="hero-workflow-link workflow-link-ce" />
-            <span className="hero-workflow-link workflow-link-be" />
+            <svg className="hero-workflow-svg" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid meet">
+              <line className="hero-workflow-link-base" x1="70" y1="80" x2="210" y2="80" />
+              <line className="hero-workflow-link-base" x1="210" y1="80" x2="360" y2="150" />
+              <line className="hero-workflow-link-base" x1="360" y1="150" x2="520" y2="150" />
+              <line className="hero-workflow-link-base" x1="360" y1="150" x2="360" y2="265" />
+              <line className="hero-workflow-link-base" x1="210" y1="80" x2="360" y2="265" />
 
-            <span className="hero-workflow-node workflow-node-a" />
-            <span className="hero-workflow-node workflow-node-b" />
-            <span className="hero-workflow-node workflow-node-c" />
-            <span className="hero-workflow-node workflow-node-d" />
-            <span className="hero-workflow-node workflow-node-e" />
+              <line className="hero-workflow-link-signal" x1="70" y1="80" x2="210" y2="80" style={{ animationDelay: '0s' }} />
+              <line className="hero-workflow-link-signal" x1="210" y1="80" x2="360" y2="150" style={{ animationDelay: '0.4s' }} />
+              <line className="hero-workflow-link-signal" x1="360" y1="150" x2="520" y2="150" style={{ animationDelay: '0.85s' }} />
+              <line className="hero-workflow-link-signal" x1="360" y1="150" x2="360" y2="265" style={{ animationDelay: '1.1s' }} />
+              <line className="hero-workflow-link-signal" x1="210" y1="80" x2="360" y2="265" style={{ animationDelay: '1.4s' }} />
+
+              <rect className="hero-workflow-node" x="58" y="68" width="24" height="24" rx="7" />
+              <rect className="hero-workflow-node" x="198" y="68" width="24" height="24" rx="7" />
+              <rect className="hero-workflow-node" x="348" y="138" width="24" height="24" rx="7" />
+              <rect className="hero-workflow-node" x="508" y="138" width="24" height="24" rx="7" />
+              <rect className="hero-workflow-node" x="348" y="253" width="24" height="24" rx="7" />
+
+              <rect className="hero-workflow-node-core" x="65" y="75" width="10" height="10" rx="3" />
+              <rect className="hero-workflow-node-core" x="205" y="75" width="10" height="10" rx="3" />
+              <rect className="hero-workflow-node-core" x="355" y="145" width="10" height="10" rx="3" />
+              <rect className="hero-workflow-node-core" x="515" y="145" width="10" height="10" rx="3" />
+              <rect className="hero-workflow-node-core" x="355" y="260" width="10" height="10" rx="3" />
+            </svg>
           </div>
         </div>
 
