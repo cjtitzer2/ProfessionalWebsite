@@ -56,7 +56,10 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 md:px-10 pt-12 pb-28">
+    <div className="relative max-w-[92rem] mx-auto px-4 md:px-8 xl:px-10 pt-12 pb-28">
+      <div className="pointer-events-none hidden xl:block absolute inset-y-8 -left-6 w-14 rounded-2xl border border-divider/40 bg-gradient-to-b from-accent/10 via-transparent to-accent/10" aria-hidden="true" />
+      <div className="pointer-events-none hidden xl:block absolute inset-y-8 -right-6 w-14 rounded-2xl border border-divider/40 bg-gradient-to-b from-accent/10 via-transparent to-accent/10" aria-hidden="true" />
+
       {/* Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-auto">
         {/* Hero Card — spans 2 cols + 2 rows on desktop */}
