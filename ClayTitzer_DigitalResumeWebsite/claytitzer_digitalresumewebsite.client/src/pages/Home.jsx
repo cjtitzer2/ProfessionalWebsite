@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import TypeWriter from '../components/TypeWriter'
 import MarqueeStrip from '../components/MarqueeStrip'
 import ParticleGrid from '../components/ParticleGrid'
-import AnimatedCounter from '../components/AnimatedCounter'
 import { experience, education, skills, contact, playbooks } from '../data/resume'
 
 const current = experience[0] ?? null
@@ -11,11 +10,8 @@ const topSkills = (skills ?? []).flatMap((group) => group.items ?? []).slice(0, 
 const educationItems = education ?? []
 const contactLinks = contact?.links ?? []
 const featuredPlaybook = playbooks[0] ?? null
-const pulseMetrics = [
-  { label: 'Roles', value: experience.length },
-  { label: 'Playbooks', value: playbooks.length },
-  { label: 'Focus Areas', value: topSkills.length },
-]
+const workflowStages = ['Trigger', 'Validate', 'Queue', 'Execute', 'Recover']
+const workflowPrinciples = ['Exception-first design', 'Reusable components', 'Deterministic routing']
 
 function BentoCard({ to, delay = 0, className = '', label = '', children }) {
   return (
@@ -217,32 +213,57 @@ export default function Home() {
           className="bento-card bento-card-entrance automation-pulse-card relative overflow-hidden"
           style={{ animationDelay: '525ms' }}
         >
-          <SectionLabel>Automation Pulse</SectionLabel>
-          <div className="grid grid-cols-3 gap-2 relative z-10">
-            {pulseMetrics.map(({ label, value }) => (
-              <div key={label} className="rounded-lg border border-divider/60 px-2 py-2 bg-offwhite/70">
-                <p className="font-mono text-[10px] text-slate tracking-wider uppercase m-0">{label}</p>
-                <p className="text-xl font-semibold text-charcoal mt-1 mb-0">
-                  <AnimatedCounter end={value} duration={1200} />
-                </p>
+          <SectionLabel>Automation Studio</SectionLabel>
+          <p className="text-xs text-charcoal/70 m-0 mb-3 relative z-10">
+            Concept workflow view inspired by enterprise automation architecture.
+          </p>
+
+          <div className="workflow-track relative z-10 mb-3" aria-hidden="true">
+            {workflowStages.map((stage, index) => (
+              <div key={stage} className="workflow-segment">
+                <span className="workflow-node">{stage}</span>
+                {index < workflowStages.length - 1 && (
+                  <span className="workflow-link">
+                    <span className="workflow-packet" />
+                  </span>
+                )}
               </div>
             ))}
           </div>
-          <div className="orbit-cluster mt-4 mx-auto relative z-10" aria-hidden="true">
-            <div className="orbit-ring">
-              <span className="orbit-node">Design</span>
-              <span className="orbit-node">Build</span>
-              <span className="orbit-node">Support</span>
+
+          <div className="mt-4 rounded-lg border border-divider/60 bg-charcoal/[0.03] p-3 relative z-10 overflow-hidden terminal-shell" aria-hidden="true">
+            <div className="code-lines space-y-1.5">
+              <p className="font-mono text-[11px] text-accent/90 m-0">$ automation run --template standard-intake</p>
+              <p className="font-mono text-[11px] text-slate m-0">[stage] input validated, branching to queue</p>
+              <p className="font-mono text-[11px] text-slate m-0">[stage] executor started with recovery profile</p>
+              <p className="font-mono text-[11px] text-slate m-0 terminal-cursor">[flow] orchestration pipeline active</p>
             </div>
-            <div className="orbit-ring orbit-ring-reverse">
-              <span className="orbit-node">Monitor</span>
-              <span className="orbit-node">Recover</span>
-              <span className="orbit-node">Scale</span>
-            </div>
-            <span className="orbit-core">RPA</span>
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-2 relative z-10">
+            {workflowPrinciples.map((item) => (
+              <span
+                key={item}
+                className="text-[11px] font-mono uppercase tracking-wider px-2 py-1 rounded-full border border-divider text-slate"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+
+          <div className="absolute top-2 right-3 flex items-center gap-1.5" aria-hidden="true">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent/60 animate-pulse" />
+            <span className="font-mono text-[9px] uppercase tracking-wider text-slate">concept mode</span>
+          </div>
+
+          <div className="absolute inset-0 pointer-events-none opacity-30" aria-hidden="true">
+            <div className="automation-grid-overlay h-full w-full" />
+          </div>
+
+          <div className="absolute bottom-2 right-3 font-mono text-[9px] uppercase tracking-wider text-slate/80" aria-hidden="true">
+            workflow map
           </div>
         </div>
-
         {/* Contact Card */}
         <BentoCard to="/contact" delay={500} label="View contact details">
           <SectionLabel>Contact</SectionLabel>
@@ -268,3 +289,4 @@ export default function Home() {
     </div>
   )
 }
+
