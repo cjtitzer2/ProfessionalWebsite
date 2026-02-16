@@ -74,8 +74,58 @@ export const education = [
 export const focusAreas = [
   'UiPath Studio & Automation Hub',
   'C# / VB.NET',
-  'Workflow Architecture',
+  'Solution Architecture',
   'API Integration',
   'Azure DevOps',
   'SQL',
 ]
+
+export const skills = [
+  {
+    category: 'Automation',
+    items: [
+      { name: 'UiPath Studio', level: 'Expert' },
+      { name: 'UiPath Orchestrator', level: 'Expert' },
+      { name: 'Automation Hub', level: 'Advanced' },
+      { name: 'Power Automate', level: 'Advanced' },
+      { name: 'Power Apps', level: 'Intermediate' },
+    ],
+  },
+  {
+    category: 'Languages',
+    items: [
+      { name: 'C#', level: 'Advanced' },
+      { name: 'VB.NET', level: 'Advanced' },
+      { name: 'SQL', level: 'Advanced' },
+      { name: 'JavaScript', level: 'Intermediate' },
+      { name: 'Python', level: 'Foundational' },
+    ],
+  },
+  {
+    category: 'Architecture & DevOps',
+    items: [
+      { name: 'Solution Architecture', level: 'Advanced' },
+      { name: 'API Integration', level: 'Intermediate' },
+      { name: 'Azure DevOps', level: 'Advanced' },
+      { name: 'Git', level: 'Intermediate' },
+    ],
+  },
+  {
+    category: 'Data & Analytics',
+    items: [
+      { name: 'Databricks', level: 'Advanced' },
+      { name: 'ODBC', level: 'Intermediate' },
+      { name: 'Excel / VBA', level: 'Advanced' },
+      { name: 'Data Modeling', level: 'Intermediate' },
+    ],
+  },
+]
+
+export const contact = {
+  location: 'Evansville, IN',
+  email: 'titzerclay@gmail.com',
+  links: [
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/clay-titzer/' },
+    { label: 'GitHub', url: 'https://github.com/cjtitzer2' },
+  ],
+}

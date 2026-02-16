@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { experience, education, focusAreas } from './resume'
+import { experience, education, focusAreas, skills, contact } from './resume'
 
 describe('resume data integrity', () => {
   describe('experience', () => {
@@ -69,6 +69,64 @@ describe('resume data integrity', () => {
     it('has no duplicates', () => {
       const unique = new Set(focusAreas)
       expect(unique.size).toBe(focusAreas.length)
+    })
+  })
+
+  describe('skills', () => {
+    const validLevels = ['Expert', 'Advanced', 'Intermediate', 'Foundational']
+
+    it('has at least one category', () => {
+      expect(skills.length).toBeGreaterThan(0)
+    })
+
+    it('every category has a name and items', () => {
+      skills.forEach((group) => {
+        expect(group.category).toBeTruthy()
+        expect(Array.isArray(group.items)).toBe(true)
+        expect(group.items.length).toBeGreaterThan(0)
+      })
+    })
+
+    it('every skill has a name and valid level', () => {
+      skills.forEach((group) => {
+        group.items.forEach((item) => {
+          expect(item.name).toBeTruthy()
+          expect(validLevels).toContain(item.level)
+        })
+      })
+    })
+
+    it('has no duplicate category names', () => {
+      const names = skills.map((s) => s.category)
+      expect(new Set(names).size).toBe(names.length)
+    })
+
+    it('has no duplicate skill names within a category', () => {
+      skills.forEach((group) => {
+        const names = group.items.map((i) => i.name)
+        expect(new Set(names).size).toBe(names.length)
+      })
+    })
+  })
+
+  describe('contact', () => {
+    it('has location', () => {
+      expect(contact.location).toBeTruthy()
+    })
+
+    it('has valid email', () => {
+      expect(contact.email).toMatch(/.+@.+\..+/)
+    })
+
+    it('has at least one link', () => {
+      expect(contact.links.length).toBeGreaterThan(0)
+    })
+
+    it('every link has label and url', () => {
+      contact.links.forEach((link) => {
+        expect(link.label).toBeTruthy()
+        expect(link.url).toMatch(/^https?:\/\//)
+      })
     })
   })
 })

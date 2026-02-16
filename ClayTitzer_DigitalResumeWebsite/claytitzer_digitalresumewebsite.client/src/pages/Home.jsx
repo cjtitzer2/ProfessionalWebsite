@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import ScrollReveal from '../components/ScrollReveal'
 import ScrollSpy from '../components/ScrollSpy'
+import Divider from '../components/Divider'
 import { experience, education } from '../data/resume'
 
 const current = experience[0] ?? null
@@ -10,7 +11,7 @@ export default function Home() {
   return (
     <>
       <ScrollSpy sections={sections} />
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
         {/* Hero */}
         <section className="min-h-[85vh] flex flex-col justify-center pt-20">
           <ScrollReveal>
@@ -34,7 +35,7 @@ export default function Home() {
           )}
 
           <ScrollReveal delay={300}>
-            <p className="text-base text-charcoal/70 mt-6 mb-0 max-w-lg leading-relaxed">
+            <p className="text-base text-charcoal/70 mt-6 mb-0 max-w-2xl leading-relaxed">
               Building enterprise automation systems from design to deployment.
               Turning manual processes into reliable, scalable workflows.
             </p>
@@ -55,24 +56,19 @@ export default function Home() {
         {/* Current Role */}
         {current && (
           <>
-            {/* Decorative divider */}
-            <div className="flex items-center gap-3 justify-center my-4">
-              <div className="w-12 h-px bg-gradient-to-r from-transparent to-gold/60" />
-              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <div className="w-12 h-px bg-gradient-to-l from-transparent to-gold/60" />
-            </div>
+            <Divider />
 
             <section className="py-16">
               <ScrollReveal>
                 <p className="font-mono text-xs text-gold tracking-widest uppercase mb-6">Current Role</p>
               </ScrollReveal>
               <ScrollReveal delay={100}>
-                <div className="border-l-2 border-accent pl-6 bg-accent-light/30 py-5 pr-5 rounded-r-sm">
+                <div className="border-l-2 border-accent pl-6 bg-accent-light/30 py-5 pr-5 rounded-r-sm max-w-3xl">
                   <h2 className="text-2xl font-semibold text-charcoal m-0">{current.title}</h2>
                   <p className="text-slate mt-1 mb-0">{current.subtitle}</p>
                   <p className="font-mono text-xs text-gold mt-1 mb-0 tracking-wide">{current.dates}</p>
                   <ul className="mt-4 space-y-2 list-none p-0">
-                    {current.bullets.slice(0, 3).map((item, i) => (
+                    {(current.bullets ?? []).slice(0, 3).map((item, i) => (
                       <li key={i} className="bullet">{item}</li>
                     ))}
                   </ul>
@@ -80,12 +76,7 @@ export default function Home() {
               </ScrollReveal>
             </section>
 
-            {/* Decorative divider */}
-            <div className="flex items-center gap-3 justify-center my-4">
-              <div className="w-12 h-px bg-gradient-to-r from-transparent to-gold/60" />
-              <div className="w-1.5 h-1.5 rounded-full bg-gold" />
-              <div className="w-12 h-px bg-gradient-to-l from-transparent to-gold/60" />
-            </div>
+            <Divider />
           </>
         )}
 
@@ -94,9 +85,9 @@ export default function Home() {
           <ScrollReveal>
             <p className="font-mono text-xs text-gold tracking-widest uppercase mb-6">Education</p>
           </ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {education.map((ed, i) => (
-              <ScrollReveal key={i} delay={(i + 1) * 100}>
+              <ScrollReveal key={ed.shortTitle} delay={(i + 1) * 100}>
                 <div className="p-5 border border-divider/60 rounded-sm hover:border-accent/30 hover:shadow-sm transition-all duration-200">
                   <h3 className="text-lg font-semibold text-charcoal m-0">{ed.shortTitle}</h3>
                   <p className="text-slate text-sm mt-1 mb-0">{ed.institution}</p>

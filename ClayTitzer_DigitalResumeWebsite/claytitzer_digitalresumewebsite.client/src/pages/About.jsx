@@ -1,6 +1,7 @@
 import ScrollReveal from '../components/ScrollReveal'
 import PageHeader from '../components/PageHeader'
 import ScrollSpy from '../components/ScrollSpy'
+import Divider from '../components/Divider'
 import { focusAreas } from '../data/resume'
 
 const philosophy = [
@@ -12,11 +13,11 @@ export default function About() {
   return (
     <>
       <ScrollSpy sections={['Bio', 'Philosophy', 'Technical']} />
-      <div className="max-w-4xl mx-auto px-6 pt-28 pb-24">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-28 pb-24">
         <PageHeader label="Trigger" title="About" />
 
         <ScrollReveal delay={100}>
-          <p className="text-base text-charcoal/80 leading-relaxed m-0 max-w-2xl mb-16">
+          <p className="text-base text-charcoal/80 leading-relaxed m-0 max-w-3xl mb-16">
             I&apos;m an RPA Developer at Old National Bank, where I lead the design,
             development, and deployment of enterprise automation solutions. My path
             into automation started through a LEAD development program within digital
@@ -25,10 +26,7 @@ export default function About() {
           </p>
         </ScrollReveal>
 
-        <div className="flex items-center gap-3 my-4 mb-12">
-          <div className="w-8 h-px bg-gradient-to-r from-accent/40 to-gold/60" />
-          <div className="w-1 h-1 rounded-full bg-gold" />
-        </div>
+        <Divider variant="left" />
 
         <ScrollReveal delay={200}>
           <h2 className="text-xl font-semibold text-charcoal m-0 mb-4">Philosophy</h2>
@@ -42,10 +40,7 @@ export default function About() {
           </div>
         </ScrollReveal>
 
-        <div className="flex items-center gap-3 my-4 mb-12">
-          <div className="w-8 h-px bg-gradient-to-r from-accent/40 to-gold/60" />
-          <div className="w-1 h-1 rounded-full bg-gold" />
-        </div>
+        <Divider variant="left" />
 
         <ScrollReveal delay={300}>
           <h2 className="text-xl font-semibold text-charcoal m-0 mb-4">Technical Focus</h2>
