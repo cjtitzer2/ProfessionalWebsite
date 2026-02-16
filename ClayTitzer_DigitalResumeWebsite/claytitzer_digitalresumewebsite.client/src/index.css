@@ -579,7 +579,7 @@ html.dark .bento-card:hover {
   border-top: 1px solid color-mix(in srgb, var(--color-divider) 65%, transparent);
   background: color-mix(in srgb, var(--color-offwhite) 96%, transparent);
   border-radius: 0.9rem;
-  padding: 0.85rem 0.7rem 0.7rem;
+  padding: 1rem 0.95rem 0.95rem;
 }
 
 .stream-entry {
@@ -591,7 +591,7 @@ html.dark .bento-card:hover {
 .stream-skills { grid-column: span 4; }
 .stream-playbooks { grid-column: span 3; }
 .stream-actions { grid-column: span 2; }
-.stream-contact { grid-column: span 6; }
+.stream-contact { grid-column: span 12; }
 
 @media (max-width: 1190px) {
   .role-ribbon {
@@ -650,18 +650,18 @@ html.dark .bento-card:hover {
 }
 
 .story-section {
-  min-height: 96vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   position: relative;
-  padding: 2rem 0;
+  padding: 2.75rem 0;
 }
 
 .story-center {
   width: 100%;
-  max-width: 88rem;
+  max-width: 100rem;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 1.35rem;
 }
 
 .hero-stage {
@@ -744,7 +744,7 @@ html.dark .bento-card:hover {
 .content-stage-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 1.2rem;
+  gap: 1.45rem;
 }
 
 .content-stage-grid .stream-lane {
@@ -760,7 +760,7 @@ html.dark .bento-card:hover {
 
 @media (max-width: 980px) {
   .story-center {
-    max-width: 56rem;
+    max-width: 62rem;
   }
   .content-stage-grid {
     grid-template-columns: 1fr;
