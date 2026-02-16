@@ -690,32 +690,39 @@ html:not(.dark) .philosophy-band {
   inset: 0;
   pointer-events: none;
   z-index: -2;
-  opacity: 0.3;
+  opacity: calc(var(--grid-fade, 1) * 0.34);
   background-image:
     linear-gradient(to right, color-mix(in srgb, var(--color-divider) 72%, transparent) 1px, transparent 1px),
     linear-gradient(to bottom, color-mix(in srgb, var(--color-divider) 72%, transparent) 1px, transparent 1px);
   background-size: 34px 34px;
+  transition: opacity 180ms linear;
 }
 
 html:not(.dark) .home-scroll-story::before {
-  opacity: 0.86;
+  opacity: calc(var(--grid-fade, 1) * 1);
   background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--color-divider) 88%, var(--color-charcoal)) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--color-divider) 88%, var(--color-charcoal)) 1px, transparent 1px);
+    linear-gradient(to right, color-mix(in srgb, var(--color-divider) 92%, var(--color-charcoal)) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-divider) 92%, var(--color-charcoal)) 1px, transparent 1px);
 }
 
 .cursor-glow {
   position: fixed;
   top: 0;
   left: 0;
-  width: 360px;
-  height: 360px;
+  width: 440px;
+  height: 440px;
   border-radius: 999px;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.35;
-  background: radial-gradient(circle at center, color-mix(in srgb, var(--color-accent) 48%, transparent) 0%, transparent 66%);
+  opacity: 0.62;
+  background:
+    radial-gradient(circle at center, color-mix(in srgb, var(--color-accent) 56%, transparent) 0%, color-mix(in srgb, var(--color-accent) 24%, transparent) 34%, transparent 70%),
+    radial-gradient(circle at center, color-mix(in srgb, white 36%, transparent) 0%, transparent 58%);
   transition: transform 120ms linear;
+}
+
+html.dark .cursor-glow {
+  opacity: 0.5;
 }
 
 .story-section {

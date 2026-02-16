@@ -27,6 +27,7 @@ function getScrollRatio() {
 export default function Home() {
   const [copied, setCopied] = useState(false)
   const [scrollRatio, setScrollRatio] = useState(0)
+  const [heroGridFade, setHeroGridFade] = useState(1)
   const [sectionProgress, setSectionProgress] = useState({ hero: 0, role: 0, content: 0, philosophy: 0 })
   const [activeSection, setActiveSection] = useState('hero')
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
@@ -52,9 +53,14 @@ export default function Home() {
       const role = getSectionProgress(roleRef.current)
       const content = getSectionProgress(contentRef.current)
       const philosophy = getSectionProgress(philosophyRef.current)
+      const heroRect = heroRef.current?.getBoundingClientRect()
+      const heroFade = heroRect
+        ? Math.max(0, Math.min(1, heroRect.bottom / Math.max(window.innerHeight, 1)))
+        : 1
       const sectionMap = { hero, role, content, philosophy }
       const nextActive = Object.entries(sectionMap).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'hero'
       setScrollRatio(getScrollRatio())
+      setHeroGridFade(heroFade)
       setSectionProgress(sectionMap)
       setActiveSection(nextActive)
     }
@@ -99,7 +105,7 @@ export default function Home() {
   }
 
   return (
-    <div className="home-scroll-story">
+    <div className="home-scroll-story" style={{ '--grid-fade': `${heroGridFade}` }}>
       <span
         className="cursor-glow"
         aria-hidden="true"
