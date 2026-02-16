@@ -123,7 +123,7 @@ export const skills = [
 
 export const contact = {
   location: 'Evansville, IN',
-  email: 'titzerclay@gmail.com',
+  email: 'contact@claytitzer.com',
   links: [
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/clay-titzer/' },
     { label: 'GitHub', url: 'https://github.com/cjtitzer2' },
