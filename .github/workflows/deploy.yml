@@ -46,9 +46,18 @@ jobs:
           test -f dist/assets/index-*.js
           test -f dist/assets/index-*.css
 
+      - name: Prepare Pages artifact root
+        working-directory: ClayTitzer_DigitalResumeWebsite/claytitzer_digitalresumewebsite.client
+        run: |
+          rm -rf pages-artifact
+          mkdir -p pages-artifact
+          cp -R dist/. pages-artifact/
+          test -f pages-artifact/index.html
+          test -f pages-artifact/CNAME
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ClayTitzer_DigitalResumeWebsite/claytitzer_digitalresumewebsite.client/dist
+          path: ClayTitzer_DigitalResumeWebsite/claytitzer_digitalresumewebsite.client/pages-artifact
 
   deploy:
     needs: build
