@@ -277,6 +277,139 @@ html.dark .bento-card:hover {
   animation: packet-move 1.6s linear infinite;
 }
 
+.automation-artifact-shell {
+  position: fixed;
+  right: clamp(0.5rem, 1.6vw, 1.4rem);
+  top: 50%;
+  transform: translateY(calc(-50% + (var(--scroll-progress, 0) - 0.5) * 70px));
+  z-index: 20;
+  width: 148px;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .automation-artifact-shell {
+    display: block;
+  }
+}
+
+.automation-artifact-object {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--color-accent) 17%, transparent), transparent 65%);
+  border: 1px solid color-mix(in srgb, var(--color-divider) 75%, transparent);
+  box-shadow: 0 0 32px color-mix(in srgb, var(--color-accent) 16%, transparent);
+}
+
+@keyframes artifact-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.artifact-orbit {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.artifact-orbit-outer {
+  border: 1px dashed color-mix(in srgb, var(--color-divider) 80%, transparent);
+  animation: artifact-spin 16s linear infinite;
+  transform: rotate(calc(var(--route-index, 0) * 10deg));
+}
+
+.artifact-orbit-inner {
+  inset: 18px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+  animation: artifact-spin 9s linear infinite reverse;
+  transform: rotate(calc(var(--route-index, 0) * -12deg));
+}
+
+.artifact-node {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-divider) 90%, white);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-divider) 80%, transparent);
+}
+
+.artifact-node-accent {
+  width: 5px;
+  height: 5px;
+  background: var(--color-accent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 70%, transparent);
+}
+
+.artifact-orbit-outer .artifact-node:nth-child(1) { top: -3px; left: 50%; transform: translateX(-50%); }
+.artifact-orbit-outer .artifact-node:nth-child(2) { top: 50%; right: -3px; transform: translateY(-50%); }
+.artifact-orbit-outer .artifact-node:nth-child(3) { bottom: -3px; left: 50%; transform: translateX(-50%); }
+.artifact-orbit-outer .artifact-node:nth-child(4) { top: 50%; left: -3px; transform: translateY(-50%); }
+
+.artifact-orbit-inner .artifact-node:nth-child(1) { top: -2px; right: 18%; }
+.artifact-orbit-inner .artifact-node:nth-child(2) { bottom: 8%; right: -2px; }
+.artifact-orbit-inner .artifact-node:nth-child(3) { left: 8%; top: 62%; }
+
+@keyframes artifact-core-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 16px color-mix(in srgb, var(--color-accent) 24%, transparent); }
+  50% { transform: scale(1.04); box-shadow: 0 0 22px color-mix(in srgb, var(--color-accent) 35%, transparent); }
+}
+
+.artifact-core {
+  position: absolute;
+  inset: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: color-mix(in srgb, var(--color-offwhite) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+  animation: artifact-core-pulse 3.2s ease-in-out infinite;
+}
+
+.artifact-core-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: color-mix(in srgb, var(--color-charcoal) 85%, transparent);
+  line-height: 1.25;
+  padding: 0 6px;
+}
+
+.artifact-stage-list {
+  margin-top: 10px;
+  margin-left: auto;
+  width: 132px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.artifact-stage {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid color-mix(in srgb, var(--color-divider) 80%, transparent);
+  color: color-mix(in srgb, var(--color-slate) 90%, transparent);
+  background: color-mix(in srgb, var(--color-offwhite) 92%, transparent);
+  border-radius: 999px;
+  padding: 2px 7px;
+  text-align: center;
+  transition: all 280ms ease;
+}
+
+.artifact-stage-active {
+  border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+  color: var(--color-accent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bento-card-entrance,
   .ambient-orb,
@@ -284,7 +417,10 @@ html.dark .bento-card:hover {
   .automation-pulse-card::after,
   .terminal-shell,
   .code-lines,
-  .workflow-packet {
+  .workflow-packet,
+  .artifact-orbit-outer,
+  .artifact-orbit-inner,
+  .artifact-core {
     animation: none !important;
   }
 }

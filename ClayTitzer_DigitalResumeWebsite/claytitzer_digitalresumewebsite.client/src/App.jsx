@@ -2,11 +2,13 @@ import { lazy, Suspense, Component } from 'react'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import Nav from './components/Nav'
 import ScrollToTop from './components/ScrollToTop'
+import AutomationArtifact from './components/AutomationArtifact'
 
 const Home = lazy(() => import('./pages/Home'))
 const Career = lazy(() => import('./pages/Career'))
 const Education = lazy(() => import('./pages/Education'))
 const Skills = lazy(() => import('./pages/Skills'))
+const Playbooks = lazy(() => import('./pages/Playbooks'))
 const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
 const NotFound = lazy(() => import('./pages/NotFound'))
@@ -26,7 +28,7 @@ class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <div className="max-w-7xl mx-auto px-6 md:px-10 pt-28 pb-24 text-center">
-          <p className="font-mono text-xs text-gold tracking-widest uppercase mb-2">Error</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-2">Error</p>
           <h1 className="text-4xl font-bold text-charcoal tracking-tight m-0 mb-4">
             Something went wrong
           </h1>
@@ -59,6 +61,7 @@ export default function App() {
     <HashRouter>
       <ScrollToTop />
       <Nav />
+      <AutomationArtifact />
       <main>
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
@@ -67,6 +70,7 @@ export default function App() {
               <Route path="/career" element={<Career />} />
               <Route path="/education" element={<Education />} />
               <Route path="/skills" element={<Skills />} />
+              <Route path="/playbooks" element={<Playbooks />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
