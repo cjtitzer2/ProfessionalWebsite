@@ -659,7 +659,7 @@ html.dark .bento-card:hover {
 
 .story-center {
   width: 100%;
-  max-width: 72rem;
+  max-width: 88rem;
   margin: 0 auto;
   padding: 0 1rem;
 }
@@ -671,6 +671,10 @@ html.dark .bento-card:hover {
 .hero-content {
   padding-top: 4rem;
   padding-bottom: 5rem;
+}
+
+.hero-title-emphasis {
+  text-shadow: 0 6px 26px color-mix(in srgb, var(--color-accent) 20%, transparent);
 }
 
 .hero-scroll-bg {
@@ -716,6 +720,9 @@ html.dark .bento-card:hover {
 .content-stage,
 .philosophy-stage {
   border-top: 1px solid color-mix(in srgb, var(--color-divider) 60%, transparent);
+  transition: transform 420ms ease, opacity 420ms ease;
+  transform: translateY(calc((1 - var(--section-progress, 0)) * 26px));
+  opacity: calc(0.76 + var(--section-progress, 0) * 0.24);
 }
 
 .role-bullet-flow {
@@ -737,12 +744,23 @@ html.dark .bento-card:hover {
 .content-stage-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.2rem;
+}
+
+.content-stage-grid .stream-lane {
+  transition: transform 420ms ease, border-color 320ms ease, box-shadow 320ms ease;
+  transform: translateY(calc((1 - var(--section-progress, 0)) * 18px));
+}
+
+.content-stage-grid .stream-lane:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--color-accent) 42%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, black 12%, transparent);
 }
 
 @media (max-width: 980px) {
   .story-center {
-    max-width: 46rem;
+    max-width: 56rem;
   }
   .content-stage-grid {
     grid-template-columns: 1fr;
@@ -754,6 +772,24 @@ html.dark .bento-card:hover {
   .stream-contact {
     grid-column: span 1;
   }
+}
+
+.section-title-emphasis {
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 12px color-mix(in srgb, var(--color-accent) 16%, transparent);
+}
+
+.detail-text-emphasis {
+  font-weight: 500;
+}
+
+.detail-text-emphasis::after {
+  content: '';
+  display: block;
+  width: min(100%, 180px);
+  height: 1px;
+  margin-top: 5px;
+  background: color-mix(in srgb, var(--color-accent) 34%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

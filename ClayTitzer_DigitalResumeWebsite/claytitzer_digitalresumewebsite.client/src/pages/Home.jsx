@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import TypeWriter from '../components/TypeWriter'
 import { experience, education, skills, contact, playbooks } from '../data/resume'
@@ -27,9 +27,31 @@ function getScrollRatio() {
 export default function Home() {
   const [copied, setCopied] = useState(false)
   const [scrollRatio, setScrollRatio] = useState(0)
+  const [sectionProgress, setSectionProgress] = useState({ role: 0, content: 0, philosophy: 0 })
+  const roleRef = useRef(null)
+  const contentRef = useRef(null)
+  const philosophyRef = useRef(null)
+
+  const getSectionProgress = (element) => {
+    if (!element) return 0
+    const rect = element.getBoundingClientRect()
+    const viewportCenter = window.innerHeight * 0.5
+    const sectionCenter = rect.top + rect.height * 0.5
+    const distance = Math.abs(viewportCenter - sectionCenter)
+    const maxDistance = Math.max(window.innerHeight * 0.8, 1)
+    const value = 1 - distance / maxDistance
+    return Math.max(0, Math.min(1, value))
+  }
 
   useEffect(() => {
-    const onScroll = () => setScrollRatio(getScrollRatio())
+    const onScroll = () => {
+      setScrollRatio(getScrollRatio())
+      setSectionProgress({
+        role: getSectionProgress(roleRef.current),
+        content: getSectionProgress(contentRef.current),
+        philosophy: getSectionProgress(philosophyRef.current),
+      })
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
@@ -71,7 +93,7 @@ export default function Home() {
 
         <div className="story-center hero-content">
           <SectionLabel>Portfolio</SectionLabel>
-          <h1 className="text-6xl md:text-8xl xl:text-9xl font-semibold tracking-tight leading-[0.94] m-0">
+          <h1 className="text-6xl md:text-8xl xl:text-9xl font-semibold tracking-tight leading-[0.94] m-0 hero-title-emphasis">
             Clay
             <br />
             <span className="text-accent">Titzer</span>
@@ -98,17 +120,21 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="story-section role-stage">
+      <section
+        ref={roleRef}
+        className="story-section role-stage"
+        style={{ '--section-progress': `${sectionProgress.role}` }}
+      >
         <div className="story-center">
           <SectionLabel>Current Role</SectionLabel>
           {current && (
             <>
-              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight m-0">{current.title}</h2>
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight m-0 section-title-emphasis">{current.title}</h2>
               <p className="text-sm text-slate mt-1 mb-0">{current.subtitle}</p>
               <p className="font-mono text-[11px] text-accent/80 mt-2 mb-5 tracking-widest uppercase">{current.dates}</p>
               <div className="role-bullet-flow">
                 {(current.bullets ?? []).slice(0, 3).map((item) => (
-                  <p key={item} className="m-0 text-sm text-charcoal/78 leading-relaxed">{item}</p>
+                  <p key={item} className="m-0 text-sm text-charcoal/78 leading-relaxed detail-text-emphasis">{item}</p>
                 ))}
               </div>
             </>
@@ -116,7 +142,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="story-section content-stage">
+      <section
+        ref={contentRef}
+        className="story-section content-stage"
+        style={{ '--section-progress': `${sectionProgress.content}` }}
+      >
         <div className="story-center content-stage-grid">
           <article className="stream-lane stream-education">
             <SectionLabel>Education</SectionLabel>
@@ -197,7 +227,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="story-section philosophy-stage">
+      <section
+        ref={philosophyRef}
+        className="story-section philosophy-stage"
+        style={{ '--section-progress': `${sectionProgress.philosophy}` }}
+      >
         <div className="story-center">
           <SectionLabel>Automation Philosophy</SectionLabel>
           <p className="text-sm text-charcoal/72 m-0 mb-5 max-w-3xl">
