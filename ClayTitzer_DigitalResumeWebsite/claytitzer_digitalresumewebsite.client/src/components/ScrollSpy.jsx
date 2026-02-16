@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 
-export default function ScrollSpy({ sections }) {
+export default function ScrollSpy({ sections = [] }) {
   const [progress, setProgress] = useState(0)
   const [activeIndex, setActiveIndex] = useState(0)
 

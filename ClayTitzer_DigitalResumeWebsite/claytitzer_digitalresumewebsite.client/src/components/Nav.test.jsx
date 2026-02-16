@@ -6,7 +6,7 @@ import Nav from './Nav'
 describe('Nav', () => {
   it('renders the logo link', () => {
     renderWithRouter(<Nav />)
-    const logoLink = screen.getByRole('link', { name: /CT/i })
+    const logoLink = screen.getByRole('link', { name: /^CT$/i })
     expect(logoLink).toBeInTheDocument()
     expect(logoLink).toHaveAttribute('href', '/')
   })

@@ -7,11 +7,11 @@ export default function Education() {
   return (
     <>
       <ScrollSpy sections={education.map(e => e.shortTitle)} />
-      <div className="max-w-4xl mx-auto px-6 pt-28 pb-24">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pt-28 pb-24">
         <PageHeader label="Output" title="Education" />
-        <div className="max-w-2xl">
+        <div className="max-w-3xl">
           {education.map((item, i) => (
-            <TimelineItem key={i} {...item} delay={i * 100} />
+            <TimelineItem key={item.title} {...item} delay={i * 100} />
           ))}
         </div>
       </div>

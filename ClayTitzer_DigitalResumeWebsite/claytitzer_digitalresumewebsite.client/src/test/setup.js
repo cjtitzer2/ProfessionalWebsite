@@ -27,6 +27,24 @@ MockIntersectionObserver._instances = []
 
 globalThis.IntersectionObserver = MockIntersectionObserver
 
+// Mock matchMedia for ThemeToggle and any media-query-dependent code
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: (query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: () => {},
+    removeListener: () => {},
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => {},
+  }),
+})
+
+// Mock window.scrollTo for ScrollToTop component (jsdom doesn't implement it)
+window.scrollTo = () => {}
+
 // Auto-reset between tests so observers from one test don't leak into the next
 afterEach(() => {
   MockIntersectionObserver.reset()
