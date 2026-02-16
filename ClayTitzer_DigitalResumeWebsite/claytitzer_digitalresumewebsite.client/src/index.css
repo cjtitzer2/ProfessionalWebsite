@@ -758,6 +758,30 @@ html.dark .bento-card:hover {
   box-shadow: 0 10px 28px color-mix(in srgb, black 12%, transparent);
 }
 
+.stream-link-lane {
+  color: inherit;
+  display: block;
+}
+
+.stream-link-lane:hover .lux-inline-link {
+  color: var(--color-accent-hover);
+}
+
+.contact-fit-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1rem;
+  align-items: center;
+  min-height: 92px;
+}
+
+.contact-fit-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 @media (max-width: 980px) {
   .story-center {
     max-width: 62rem;
@@ -771,6 +795,15 @@ html.dark .bento-card:hover {
   .stream-actions,
   .stream-contact {
     grid-column: span 1;
+  }
+
+  .contact-fit-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .contact-fit-links {
+    justify-content: flex-start;
   }
 }
 

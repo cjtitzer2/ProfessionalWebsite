@@ -148,7 +148,11 @@ export default function Home() {
         style={{ '--section-progress': `${sectionProgress.content}` }}
       >
         <div className="story-center content-stage-grid">
-          <article className="stream-lane stream-education">
+          <Link
+            to="/education"
+            aria-label="View education details"
+            className="stream-lane stream-link-lane stream-education no-underline"
+          >
             <SectionLabel>Education</SectionLabel>
             <div className="space-y-3 mb-3">
               {educationItems.map((ed) => (
@@ -158,21 +162,29 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <Link to="/education" aria-label="View education details" className="lux-inline-link no-underline">
+            <span className="lux-inline-link">
               View Education Details
-            </Link>
-          </article>
+            </span>
+          </Link>
 
-          <article className="stream-lane stream-skills">
+          <Link
+            to="/skills"
+            aria-label="View skills details"
+            className="stream-lane stream-link-lane stream-skills no-underline"
+          >
             <SectionLabel>Skills</SectionLabel>
             <div className="flex flex-wrap gap-2">
               {topSkills.map(({ name }) => (
                 <span key={name} className="lux-chip">{name}</span>
               ))}
             </div>
-          </article>
+          </Link>
 
-          <article className="stream-lane stream-playbooks">
+          <Link
+            to="/playbooks"
+            aria-label="View playbooks details"
+            className="stream-lane stream-link-lane stream-playbooks no-underline"
+          >
             <SectionLabel>Playbooks</SectionLabel>
             {featuredPlaybook ? (
               <>
@@ -187,10 +199,10 @@ export default function Home() {
             ) : (
               <p className="text-sm text-slate m-0 mb-3">Playbooks coming soon.</p>
             )}
-            <Link to="/playbooks" aria-label="View playbooks details" className="lux-inline-link no-underline">
+            <span className="lux-inline-link">
               View Playbooks Details
-            </Link>
-          </article>
+            </span>
+          </Link>
 
           <article className="stream-lane stream-actions">
             <SectionLabel>Quick Actions</SectionLabel>
@@ -214,16 +226,24 @@ export default function Home() {
             </div>
           </article>
 
-          <article className="stream-lane stream-contact">
+          <Link
+            to="/contact"
+            aria-label="View contact details"
+            className="stream-lane stream-link-lane stream-contact no-underline"
+          >
             <SectionLabel>Contact</SectionLabel>
-            <p className="text-sm text-charcoal/75 m-0 mb-2">{contact.email}</p>
-            <p className="text-xs text-slate m-0">{contact.location}</p>
-            <div className="flex gap-3 mt-3">
-              {contactLinks.map(({ label }) => (
-                <span key={label} className="text-xs text-accent">{label}</span>
-              ))}
+            <div className="contact-fit-grid">
+              <div>
+                <p className="text-sm text-charcoal/75 m-0 mb-2">{contact.email}</p>
+                <p className="text-xs text-slate m-0">{contact.location}</p>
+              </div>
+              <div className="contact-fit-links">
+                {contactLinks.map(({ label }) => (
+                  <span key={label} className="text-xs text-accent">{label}</span>
+                ))}
+              </div>
             </div>
-          </article>
+          </Link>
         </div>
       </section>
 
