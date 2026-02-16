@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 
@@ -7,105 +7,140 @@ const links = [
   { to: '/career', label: 'Career' },
   { to: '/education', label: 'Education' },
   { to: '/skills', label: 'Skills' },
+  { to: '/playbooks', label: 'Playbooks' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
 ]
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  const closeMenu = () => setMenuOpen(false)
-
-  const onScroll = useCallback(() => {
-    setScrolled(window.scrollY > 20)
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight
-    setProgress(docHeight > 0 ? Math.min(Math.max(window.scrollY / docHeight, 0), 1) : 0)
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [onScroll])
+  const [expanded, setExpanded] = useState(false)
+  const menuRef = useRef(null)
+  const toggleRef = useRef(null)
 
   const linkClass = ({ isActive }) =>
-    `text-sm tracking-wide transition-colors duration-200 no-underline ${
+    `text-sm tracking-wide transition-all duration-200 no-underline px-3 py-1.5 rounded-full ${
       isActive
-        ? 'text-accent font-medium'
-        : 'text-slate hover:text-charcoal'
+        ? 'bg-accent text-white font-medium'
+        : 'text-slate hover:text-charcoal hover:bg-charcoal/5'
     }`
 
+  useEffect(() => {
+    if (!expanded) return
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setExpanded(false)
+    }
+
+    const closeOnOutsideClick = (event) => {
+      const target = event.target
+      if (menuRef.current?.contains(target)) return
+      if (toggleRef.current?.contains(target)) return
+      setExpanded(false)
+    }
+
+    document.addEventListener('keydown', closeOnEscape)
+    document.addEventListener('mousedown', closeOnOutsideClick)
+
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape)
+      document.removeEventListener('mousedown', closeOnOutsideClick)
+    }
+  }, [expanded])
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || menuOpen ? 'bg-offwhite/95 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-        <NavLink to="/" className="font-semibold text-charcoal tracking-tight text-lg group">
-          <span className="text-accent">C</span>T
-          <span className="inline-block w-0 group-hover:w-1.5 h-1.5 rounded-full bg-gold transition-all duration-300 ml-0 group-hover:ml-1" />
-        </NavLink>
+    <nav
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
+      role="navigation"
+      aria-label="Primary navigation"
+    >
+      <div
+        data-testid="desktop-nav"
+        className="hidden md:flex items-center gap-1 bg-offwhite/80 backdrop-blur-xl border border-divider/50 rounded-full px-2 py-2 shadow-lg"
+      >
+        {links.map(({ to, label }) => (
+          <NavLink key={to} to={to} end={to === '/'} className={linkClass}>
+            {label}
+          </NavLink>
+        ))}
+        <div className="w-px h-5 bg-divider/40 mx-1" />
+        <ThemeToggle />
+      </div>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
-          <ul className="flex gap-8 list-none m-0 p-0">
-            {links.map(({ to, label }) => (
-              <li key={to}>
-                <NavLink to={to} end={to === '/'} className={linkClass}>
-                  {label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-          <ThemeToggle />
-        </div>
-
-        {/* Mobile controls */}
-        <div className="flex items-center gap-3 md:hidden">
-          <ThemeToggle />
-          <button
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            className="p-1.5 text-slate hover:text-charcoal transition-colors duration-200 cursor-pointer bg-transparent border-none"
+      <div data-testid="mobile-nav" className="md:hidden">
+        {expanded && (
+          <div
+            id="mobile-nav-menu"
+            ref={menuRef}
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-offwhite/95 backdrop-blur-xl border border-divider/50 rounded-2xl p-3 shadow-lg min-w-[200px] animate-[fade-in-up_0.2s_ease-out]"
           >
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              {menuOpen ? (
+            <ul className="list-none m-0 p-0 space-y-1">
+              {links.map(({ to, label }) => (
+                <li key={to}>
+                  <NavLink
+                    to={to}
+                    end={to === '/'}
+                    className={({ isActive }) =>
+                      `block text-sm tracking-wide no-underline px-4 py-2 rounded-lg transition-all duration-200 ${
+                        isActive
+                          ? 'bg-accent text-white font-medium'
+                          : 'text-slate hover:text-charcoal hover:bg-charcoal/5'
+                      }`
+                    }
+                    onClick={() => setExpanded(false)}
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="flex items-center gap-1 bg-offwhite/80 backdrop-blur-xl border border-divider/50 rounded-full px-2 py-2 shadow-lg">
+          <NavLink
+            to="/"
+            end
+            className={linkClass}
+            onClick={() => setExpanded(false)}
+          >
+            Home
+          </NavLink>
+          <button
+            ref={toggleRef}
+            onClick={() => setExpanded((o) => !o)}
+            aria-label={expanded ? 'Close menu' : 'Open menu'}
+            aria-expanded={expanded}
+            aria-controls="mobile-nav-menu"
+            className="text-sm tracking-wide px-3 py-1.5 rounded-full text-slate hover:text-charcoal hover:bg-charcoal/5 transition-all duration-200 cursor-pointer bg-transparent border-none"
+          >
+            <svg
+              aria-hidden="true"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {expanded ? (
                 <>
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </>
               ) : (
                 <>
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="18" x2="21" y2="18" />
+                  <circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+                  <circle cx="12" cy="18" r="1.5" fill="currentColor" stroke="none" />
                 </>
               )}
             </svg>
           </button>
+          <div className="w-px h-5 bg-divider/40 mx-1" />
+          <ThemeToggle />
         </div>
-      </div>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="md:hidden border-t border-divider/30 px-6 pb-4">
-          <ul className="list-none m-0 p-0 space-y-3 pt-3">
-            {links.map(({ to, label }) => (
-              <li key={to}>
-                <NavLink to={to} end={to === '/'} className={linkClass} onClick={closeMenu}>
-                  {label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Top progress bar */}
-      <div className="h-[2px] bg-transparent">
-        <div
-          className="h-full bg-gradient-to-r from-accent to-gold transition-all duration-150"
-          style={{ width: `${progress * 100}%` }}
-        />
       </div>
     </nav>
   )
